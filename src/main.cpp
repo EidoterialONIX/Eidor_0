@@ -4,6 +4,7 @@
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
 
+#include "camera.h"
 
 #include <iostream>
 
@@ -16,6 +17,8 @@ struct Option {
 
 Option _option;
 
+Camera _camera(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]), Vector2D_f(3000, 5000));
+
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     _option.WINDOW_SIZE[0] = width;
@@ -27,6 +30,46 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(pWindow, GL_TRUE);
+    }
+    else if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+        _camera.move_Camera(Vector2D_f(
+            0.0f,
+            -_camera.get_Permament_Speed()
+        ));
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+        _camera.move_Camera(Vector2D_f(
+            0.0f,
+            _camera.get_Permament_Speed()
+        ));
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+        _camera.move_Camera(Vector2D_f(
+            -_camera.get_Permament_Speed(),
+            0.0f
+        ));
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        _camera.move_Camera(Vector2D_f(
+            _camera.get_Permament_Speed(),
+            0.0f
+        ));
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+        _camera.reset_zoom();
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_U && action == GLFW_PRESS) {
+        _camera.up_zoom();
+        _camera.show_Info_Camera();
+    }
+    else if (key == GLFW_KEY_Y && action == GLFW_PRESS) {
+        _camera.down_zoom();
+        _camera.show_Info_Camera();
     }
 
 }
@@ -80,9 +123,9 @@ int main(void)
 
     Rect rect;
 
-    rect.set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
-    rect.set_Size(Vector3D_f(640.0f, 480.0f, 0.0f));
-    rect.set_Color(Vector3D_f(0.5f, 1.0f, 0.0f));
+    rect.set_Position(Vector3D_f(100.0f, 100.0f, 0.0f));
+    rect.set_Size(Vector3D_f(200.0f, 100.0f, 0.0f));
+    rect.set_Color(Vector3D_f(1.0f, 0.0f, 0.0f));
     rect.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
     Shader_Program shader = Shader_Program(
@@ -91,8 +134,7 @@ int main(void)
 
     Texture texture = Texture("E:/Project/Eidor_0/Texture_2.jpg");
 
-
-
+    _camera.show_Info_Camera();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))

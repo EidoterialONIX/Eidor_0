@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.30.0 FATAL_ERROR)
 project(Eidor_0)
 
 add_executable(Eidor_0 src/main.cpp 
+src/camera.h src/camera.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 
