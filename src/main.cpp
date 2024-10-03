@@ -129,10 +129,10 @@ int main(void)
     rect.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
     Shader_Program shader = Shader_Program(
-        "E:/project/Si_Or/src/Render/Shaders/Basic_vertex.txt",
-        "E:/project/Si_Or/src/Render/Shaders/Basic_fragment.txt");
+        "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
+        "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt");
 
-    Texture texture = Texture("E:/Project/Eidor_0/Texture_2.jpg");
+    Texture texture = Texture("E:/C++ projects/Eidor_0/Texture_2.jpg");
 
     _camera.show_Info_Camera();
 
