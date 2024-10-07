@@ -6,6 +6,9 @@
 
 #include "camera.h"
 
+
+#include "player.h"
+
 #include <iostream>
 
 
@@ -122,19 +125,40 @@ int main(void)
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
 
     Rect rect;
+    Rect background;
+
+    Rect object;
 
     rect.set_Position(Vector3D_f(100.0f, 100.0f, 0.0f));
     rect.set_Size(Vector3D_f(200.0f, 100.0f, 0.0f));
-    rect.set_Color(Vector3D_f(1.0f, 0.0f, 0.0f));
+    rect.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
     rect.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
+    background.set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
+    background.set_Size(Vector3D_f(3000.0f, 5000.0f, 0.0f));
+    background.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    background.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
+    object.set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
+    object.set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
+    object.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    object.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
 
     Shader_Program shader = Shader_Program(
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt");
 
     Texture texture = Texture("E:/C++ projects/Eidor_0/Texture_2.jpg");
+    Texture bg = Texture("E:/C++ projects/Eidor_0/bgg_2.jpg");
+    Texture rock = Texture("E:/C++ projects/Eidor_0/rock.jpg");
 
     _camera.show_Info_Camera();
+
+    Player player("E:/C++ projects/Eidor_0/player.jpg", Vector2D_f(0.0f, 0.0f), Vector2D_f(100.0f, 100.0f), Vector2D_f(3000, 5000));
+
+
+
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
@@ -143,7 +167,17 @@ int main(void)
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
+        
+        /// Render background ----
+
+        render.Draw(background, shader, bg);
+
+
+
+
         render.Draw(rect, shader, texture);
+        render.Draw(object, shader, rock);
+
 
         /* Swap front and back buffers */
         glfwSwapBuffers(pWindow);

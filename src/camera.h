@@ -10,7 +10,7 @@ class Camera {
 private:
 
 	Vector2D_f _size_screen;
-	Vector2D_f _max_map_size;
+	Vector2D_f _max_size_map;
 
 	Vector2D_f _position_camera;
 	Vector2D_f _size_camera;
@@ -28,8 +28,9 @@ private:
 	
 public:
 
-	Camera(Vector2D_f size_screen, Vector2D_f max_map_size);
+	Camera(Vector2D_f size_screen, Vector2D_f max_size_map);
 
+	Vector2D_f get_Max_Size_Map() const;
 
 	void move_Camera(Vector2D_f vector_move);
 	

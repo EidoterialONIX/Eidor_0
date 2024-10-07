@@ -16,6 +16,7 @@ private:
 
 public:
 
+    Texture() = default;
 
     Texture(const char* texture_path);
 

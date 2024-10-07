@@ -5,6 +5,9 @@ project(Eidor_0)
 
 add_executable(Eidor_0 src/main.cpp 
 src/camera.h src/camera.cpp 
+src/collider.h src/collider.cpp 
+src/player.h src/player.cpp 
+src/characteristic.h src/characteristic.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 

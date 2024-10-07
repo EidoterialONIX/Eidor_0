@@ -3,11 +3,11 @@
 
 
 
-Camera::Camera(Vector2D_f size_screen, Vector2D_f max_map_size) {
+Camera::Camera(Vector2D_f size_screen, Vector2D_f max_size_map) {
 	this->_position_camera = Vector2D_f(0.0f, 0.0f);
 
 	this->_size_screen = size_screen;
-	this->_max_map_size = max_map_size;
+	this->_max_size_map = max_size_map;
 
 	this->_permament_speed = 100.0f;
 	
@@ -22,10 +22,10 @@ void Camera::_UPDATE() {
 		this->_correct_zoom * this->_size_screen.y
 	);
 
-	if (this->_position_camera.x + this->_size_camera.x >= this->_max_map_size.x)
-		this->_position_camera.x -= this->_position_camera.x + this->_size_camera.x - this->_max_map_size.x;
-	if (this->_position_camera.y + this->_size_camera.y >= this->_max_map_size.y)
-		this->_position_camera.y -= this->_position_camera.y + this->_size_camera.y - this->_max_map_size.y;
+	if (this->_position_camera.x + this->_size_camera.x >= this->_max_size_map.x)
+		this->_position_camera.x -= this->_position_camera.x + this->_size_camera.x - this->_max_size_map.x;
+	if (this->_position_camera.y + this->_size_camera.y >= this->_max_size_map.y)
+		this->_position_camera.y -= this->_position_camera.y + this->_size_camera.y - this->_max_size_map.y;
 
 	this->_position_render_zone = Vector2D_f(
 		this->_position_camera.x - (this->_size_camera.x * 2),
@@ -37,6 +37,12 @@ void Camera::_UPDATE() {
 	);
 
 }
+
+Vector2D_f Camera::get_Max_Size_Map() const {
+	return this->_max_size_map;
+
+}
+
 
 void Camera::move_Camera(Vector2D_f vector_move) {
 	this->_position_camera += vector_move;
@@ -85,7 +91,7 @@ void Camera::show_Info_Camera() const {
 
 	cout << "Absolute configurations ----" << endl;
 	cout << "Size screen: " << "(X: " << this->_size_screen.x << ", Y: " << this->_size_screen.y << ")" << endl;
-	cout << "Max map size: " << "(X: " << this->_max_map_size.x << ", Y: " << this->_max_map_size.y << ")" << endl;
+	cout << "Max map size: " << "(X: " << this->_max_size_map.x << ", Y: " << this->_max_size_map.y << ")" << endl;
 
 	cout << endl;
 
