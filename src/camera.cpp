@@ -9,7 +9,11 @@ Camera::Camera(Vector2D_f size_screen, Vector2D_f max_size_map) {
 	this->_size_screen = size_screen;
 	this->_max_size_map = max_size_map;
 
-	this->_permament_speed = 100.0f;
+	this->_render_object_conteiner.resize(60);
+	this->_count_render_object = 0;
+
+	this->_permament_speed = 1.0f;
+	this->_velosity = Vector2D_f(0.0f, 0.0f);
 	
 	this->_UPDATE();
 
@@ -44,14 +48,42 @@ Vector2D_f Camera::get_Max_Size_Map() const {
 }
 
 
-void Camera::move_Camera(Vector2D_f vector_move) {
-	this->_position_camera += vector_move;
+void Camera::move_Camera() {
+	this->_position_camera += this->_velosity;
 
 	if (_position_camera.x <= 0.0f) this->_position_camera.x = 0.0f;
 	if (_position_camera.y <= 0.0f) this->_position_camera.y = 0.0f;
 
 	this->_UPDATE();
 
+}
+
+std::vector<Rect> Camera::pull_Object(std::vector<Rect> object_conteiner) {
+	this->_count_render_object = 0;
+
+	for (int i{ 0 }; i < object_conteiner.size(); i++) {
+
+		if (object_conteiner[i].get_Position().x <= this->_position_render_zone.x + this->_size_render_zone.x ||
+			object_conteiner[i].get_Position().x + object_conteiner[i].get_Size().x >= this->_position_render_zone.x) {
+
+			if (object_conteiner[i].get_Position().y <= this->_position_render_zone.y + this->_size_render_zone.y ||
+				object_conteiner[i].get_Position().y + object_conteiner[i].get_Size().y >= this->_position_render_zone.y) {
+
+				this->_render_object_conteiner[this->_count_render_object].set_Position(object_conteiner[i].get_Position());
+				this->_render_object_conteiner[this->_count_render_object].set_Size(object_conteiner[i].get_Size());
+				this->_render_object_conteiner[this->_count_render_object].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+				this->_render_object_conteiner[this->_count_render_object].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
+				this->_render_object_conteiner[this->_count_render_object].set_Position(object_conteiner[i].get_Position() - Vector3D_f(this->_position_camera.x, this->_position_camera.y, 0.0f));
+				this->_render_object_conteiner[this->_count_render_object].set_Size(object_conteiner[i].get_Size() * Vector3D_f(this->_correct_zoom, this->_correct_zoom, 1.0f));
+
+				this->_count_render_object++;
+			}
+		}
+
+	}  
+
+	return this->_render_object_conteiner;
 }
 
 void Camera::reset_zoom() {
@@ -81,6 +113,32 @@ void Camera::down_zoom() {
 
 float Camera::get_Permament_Speed() const {
 	return this->_permament_speed;
+
+}
+
+void Camera::change_Velosity(int side) {
+
+	if (side == 0) {
+		this->_velosity.x += -this->_permament_speed;
+	}
+	else if (side == 1) {
+		this->_velosity.y += -this->_permament_speed;
+	}
+	else if (side == 2) {
+		this->_velosity.x += this->_permament_speed;
+	}
+	else if (side == 3) {
+		this->_velosity.y += this->_permament_speed;
+	}
+}
+
+void Camera::reset_velosity() {
+	this->_velosity = Vector2D_f(0.0f, 0.0f);
+
+}
+
+unsigned int Camera::get_Count_Render_Object() const {
+	return this->_count_render_object;
 
 }
 

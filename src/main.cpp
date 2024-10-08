@@ -35,31 +35,19 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
         glfwSetWindowShouldClose(pWindow, GL_TRUE);
     }
     else if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-        _camera.move_Camera(Vector2D_f(
-            0.0f,
-            -_camera.get_Permament_Speed()
-        ));
+        _camera.change_Velosity(1);
         _camera.show_Info_Camera();
     }
     else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-        _camera.move_Camera(Vector2D_f(
-            0.0f,
-            _camera.get_Permament_Speed()
-        ));
+        _camera.change_Velosity(3);
         _camera.show_Info_Camera();
     }
     else if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-        _camera.move_Camera(Vector2D_f(
-            -_camera.get_Permament_Speed(),
-            0.0f
-        ));
+        _camera.change_Velosity(0);
         _camera.show_Info_Camera();
     }
     else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        _camera.move_Camera(Vector2D_f(
-            _camera.get_Permament_Speed(),
-            0.0f
-        ));
+        _camera.change_Velosity(2);
         _camera.show_Info_Camera();
     }
     else if (key == GLFW_KEY_R && action == GLFW_PRESS) {
@@ -75,6 +63,18 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
         _camera.show_Info_Camera();
     }
 
+    if (key == GLFW_KEY_A && action == GLFW_RELEASE) {
+        _camera.reset_velosity();
+    }
+    else if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+        _camera.reset_velosity();
+    }
+    else if (key == GLFW_KEY_D && action == GLFW_RELEASE) {
+        _camera.reset_velosity();
+    }
+    else if (key == GLFW_KEY_S && action == GLFW_RELEASE) {
+        _camera.reset_velosity();
+    }
 }
 
 
@@ -148,21 +148,49 @@ int main(void)
     Shader_Program shader = Shader_Program(
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt");
+    Shader_Program shader_bg(
+        "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Vertex.txt",
+        "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
     Texture texture = Texture("E:/C++ projects/Eidor_0/Texture_2.jpg");
-    Texture bg = Texture("E:/C++ projects/Eidor_0/bgg_2.jpg");
+    Texture bg = Texture("E:/C++ projects/Eidor_0/bgg_3.jpg");
     Texture rock = Texture("E:/C++ projects/Eidor_0/rock.jpg");
 
     _camera.show_Info_Camera();
 
     Player player("E:/C++ projects/Eidor_0/player.jpg", Vector2D_f(0.0f, 0.0f), Vector2D_f(100.0f, 100.0f), Vector2D_f(3000, 5000));
 
+    std::vector<Rect> _object_conteiner;
 
+    _object_conteiner.resize(_object_conteiner.size() + 1);
+    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
+    _object_conteiner.resize(_object_conteiner.size() + 1);
+    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(400.0f, 300.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
+    _object_conteiner.resize(_object_conteiner.size() + 1);
+    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(1200.0f, 700.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
+
+    _object_conteiner.resize(_object_conteiner.size() + 1);
+    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(800.0f, 900.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
+    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
+
+        _camera.move_Camera();
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
@@ -170,14 +198,17 @@ int main(void)
         
         /// Render background ----
 
-        render.Draw(background, shader, bg);
+        render.Draw(background, shader_bg, bg);
 
 
+        /// Render object ----
 
+        std::vector<Rect> render_object = _camera.pull_Object(_object_conteiner);
 
-        render.Draw(rect, shader, texture);
-        render.Draw(object, shader, rock);
-
+        for (int i{ 0 }; i < _camera.get_Count_Render_Object(); i++) {
+            render.Draw(render_object[i], shader, rock);
+        }
+        
 
         /* Swap front and back buffers */
         glfwSwapBuffers(pWindow);
