@@ -7,7 +7,7 @@
 #include "camera.h"
 
 
-#include "player.h"
+//#include "player.h"
 
 #include <iostream>
 
@@ -152,13 +152,22 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Vertex.txt",
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
-    Texture texture = Texture("E:/C++ projects/Eidor_0/Texture_2.jpg");
-    Texture bg = Texture("E:/C++ projects/Eidor_0/bgg_3.jpg");
-    Texture rock = Texture("E:/C++ projects/Eidor_0/rock.jpg");
+    Texture_Manager _texture_manager;
+    
+    _texture_manager.add_Texture(
+        "E:/C++ projects/Eidor_0/bgg_3.jpg",
+        "Background",
+        "JPG"
+    );
+    _texture_manager.add_Texture(
+        "E:/C++ projects/Eidor_0/rock.jpg",
+        "Rock",
+        "JPG"
+    );
 
+    _texture_manager.show_info();
     _camera.show_Info_Camera();
 
-    Player player("E:/C++ projects/Eidor_0/player.jpg", Vector2D_f(0.0f, 0.0f), Vector2D_f(100.0f, 100.0f), Vector2D_f(3000, 5000));
 
     std::vector<Rect> _object_conteiner;
 
@@ -198,7 +207,8 @@ int main(void)
         
         /// Render background ----
 
-        render.Draw(background, shader_bg, bg);
+        render.Draw(background, shader_bg, _texture_manager.get_Texture("Background"));
+
 
 
         /// Render object ----
@@ -206,7 +216,7 @@ int main(void)
         std::vector<Rect> render_object = _camera.pull_Object(_object_conteiner);
 
         for (int i{ 0 }; i < _camera.get_Count_Render_Object(); i++) {
-            render.Draw(render_object[i], shader, rock);
+            render.Draw(render_object[i], shader, _texture_manager.get_Texture("Rock"));
         }
         
 

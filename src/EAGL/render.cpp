@@ -58,7 +58,7 @@ void Render::Draw(Rect RECT, Shader_Program shader_program, Texture& texture) {
 		glBindVertexArray(0);
 		
 		shader_program.USE();
-		glBindTexture(GL_TEXTURE_2D, texture.get_Texture());
+		glBindTexture(GL_TEXTURE_2D, texture.get_ID());
 		glBindVertexArray(this->VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
