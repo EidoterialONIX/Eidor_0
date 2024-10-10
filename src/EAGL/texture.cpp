@@ -81,7 +81,7 @@ Texture Texture_Manager::get_Texture(const char* name_texture) const {
 
 }
 
-void Texture_Manager::show_info() {
+void Texture_Manager::show_Info() {
     using namespace std;
 
     cout << " --- ALL TEXTURE ---" << endl;

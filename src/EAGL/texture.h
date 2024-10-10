@@ -48,6 +48,6 @@ public:
 
     Texture get_Texture(const char* name_texture) const;
     
-    void show_info();
+    void show_Info();
 
 };

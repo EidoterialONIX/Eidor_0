@@ -12,6 +12,6 @@ void main() {
 	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
 	
 	ourColor = aColor;
-	TexCord = vec2(aTexCord.x * 30, aTexCord.y * 50);
+	TexCord = vec2(aTexCord.x * 4, aTexCord.y);
 	
 }

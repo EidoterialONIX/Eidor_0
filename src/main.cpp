@@ -3,8 +3,11 @@
 
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
+#include "EAGL/sprite.h"
 
 #include "camera.h"
+#include "location_object.h"
+
 
 
 //#include "player.h"
@@ -124,25 +127,8 @@ int main(void)
 
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
 
-    Rect rect;
-    Rect background;
+ 
 
-    Rect object;
-
-    rect.set_Position(Vector3D_f(100.0f, 100.0f, 0.0f));
-    rect.set_Size(Vector3D_f(200.0f, 100.0f, 0.0f));
-    rect.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    rect.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-    background.set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
-    background.set_Size(Vector3D_f(3000.0f, 5000.0f, 0.0f));
-    background.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    background.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-    object.set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
-    object.set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
-    object.set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    object.set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
 
     Shader_Program shader = Shader_Program(
@@ -153,6 +139,10 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
     Texture_Manager _texture_manager;
+    Sprite_Manager _sprite_manager;
+
+    Location_Object_Manager _location_object_manager(&_sprite_manager);
+
     
     _texture_manager.add_Texture(
         "E:/C++ projects/Eidor_0/bgg_3.jpg",
@@ -164,36 +154,41 @@ int main(void)
         "Rock",
         "JPG"
     );
+    _texture_manager.add_Texture(
+        "E:/C++ projects/Eidor_0/slot.jpg",
+        "Slot",
+        "JPG"
+    );
+    _texture_manager.add_Texture(
+        "E:/C++ projects/Eidor_0/icon_personal.jpg",
+        "Icon_Personal",
+        "JPG"
+    );
 
-    _texture_manager.show_info();
+    _sprite_manager.add_Sptite(
+        &_texture_manager,
+        "Sprite_Rock",
+        Vector2D_f(100.f, 100.f),
+        Vector2D_f(100.f, 100.f),
+        Vector3D_f(1.0f, 1.0f, 1.0f),
+        Vector2D_f(0.0f, 1.0f),
+        Vector2D_f(1.0f, 1.0f),
+        Vector2D_f(1.0f, 0.0f),
+        Vector2D_f(0.0f, 0.0f)
+    );
+
+    _location_object_manager.add_Location_Object(
+        "Sprite_Rock",
+        Vector2D_f(30.f, 50.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+
+
+    _texture_manager.show_Info();
+    _sprite_manager.show_Info();
+    _location_object_manager.show_Info();
     _camera.show_Info_Camera();
-
-
-    std::vector<Rect> _object_conteiner;
-
-    _object_conteiner.resize(_object_conteiner.size() + 1);
-    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(0.0f, 0.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-    _object_conteiner.resize(_object_conteiner.size() + 1);
-    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(400.0f, 300.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-    _object_conteiner.resize(_object_conteiner.size() + 1);
-    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(1200.0f, 700.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-    _object_conteiner.resize(_object_conteiner.size() + 1);
-    _object_conteiner[_object_conteiner.size() - 1].set_Position(Vector3D_f(800.0f, 900.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Size(Vector3D_f(100.0f, 100.0f, 0.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-    _object_conteiner[_object_conteiner.size() - 1].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
@@ -208,16 +203,19 @@ int main(void)
         /// Render background ----
 
         render.Draw(background, shader_bg, _texture_manager.get_Texture("Background"));
-
+        render.Draw(slot, shader_bg, _texture_manager.get_Texture("Slot"));
 
 
         /// Render object ----
 
-        std::vector<Rect> render_object = _camera.pull_Object(_object_conteiner);
+        std::vector<Rect> render_object = _camera.pull_Object(_location_object_manager.pull_Location_Object());
 
-        for (int i{ 0 }; i < _camera.get_Count_Render_Object(); i++) {
-            render.Draw(render_object[i], shader, _texture_manager.get_Texture("Rock"));
-        }
+
+        render.Draw(
+            _sprite_manager.get_Sprite("Sprite_Rock").get_Surface(),
+            shader,
+            _sprite_manager.get_Sprite("Sprite_Rock").get_Texture_Manager()->get_Texture("Rock")
+        );
         
 
         /* Swap front and back buffers */

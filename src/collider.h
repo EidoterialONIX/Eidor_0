@@ -6,31 +6,29 @@
 class Collider {
 private:
 
-	Vector2D_f _max_size_map;
-
-	Vector2D_f _size_collider;
-
 	Vector2D_f _position;
 	Vector2D_f _size;
 
-	float _correct_scale = 1.f;
-	float _max_scale = 2.0f;
-	float _min_scale = 0.5f;
-
+	bool _status_collision;
 	
 public:
 
 	Collider() = default;
 
-	Collider(Vector2D_f max_size_map, Vector2D_f position, Vector2D_f size);
-	
-	void reset_zoom();
-	void up_zoom();
-	void down_zoom();
+	Collider(
+		Vector2D_f position,
+		Vector2D_f size,
+		bool status_collision
+	);
 
-	void _Update();
-	
+	void swich_Status_Collision();
+	bool get_Status_Collision() const;
 
+	void set_Position(Vector2D_f position);
+	Vector2D_f get_Position() const;
+
+	void set_Size(Vector2D_f size);
+	Vector2D_f get_Size() const;
 
 };
 

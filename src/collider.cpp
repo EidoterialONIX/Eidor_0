@@ -1,51 +1,43 @@
 #include "collider.h"
 
-Collider::Collider(Vector2D_f max_size_map, Vector2D_f position, Vector2D_f size) {
-
-	this->_max_size_map = max_size_map;
-
+Collider::Collider(
+	Vector2D_f position,
+	Vector2D_f size,
+	bool status_collision
+) {
 	this->_position = position;
-	this->_size_collider = size;
-
-	this->_Update();
-
-}
-
-void Collider::_Update() {
-
-	this->_size = Vector2D_f(
-		this->_correct_scale * this->_size_collider.x,
-		this->_correct_scale * this->_size_collider.y
-	);
-
-	if (this->_position.x + this->_size.x >= this->_max_size_map.x)
-		this->_position.x -= this->_position.x + this->_size.x - this->_max_size_map.x;
-	if (this->_position.y + this->_size.y >= this->_max_size_map.y)
-		this->_position.y -= this->_position.y + this->_size.y - this->_max_size_map.y;
+	this->_size = size;
+	this->_status_collision = status_collision;
 
 }
 
-void Collider::reset_zoom() {
-	this->_correct_scale = 1.0f;
-
-	this->_Update();
-
-}
-
-void Collider::up_zoom() {
-	this->_correct_scale += 0.1;
-
-	if (this->_correct_scale >= this->_max_scale) this->_correct_scale = this->_max_scale;
-
-	this->_Update();
+void Collider::swich_Status_Collision() {
+	if (this->_status_collision) this->_status_collision = false;
+	else this->_status_collision = true;
 
 }
 
-void Collider::down_zoom() {
-	this->_correct_scale -= 0.1;
+bool Collider::get_Status_Collision() const {
+	return this->_status_collision;
 
-	if (this->_correct_scale <= this->_min_scale) this->_correct_scale = this->_min_scale;
+}
 
-	this->_Update();
+void Collider::set_Position(Vector2D_f position) {
+	this->_position = position;
+
+}
+
+Vector2D_f Collider::get_Position() const {
+	return this->_position;
+
+}
+
+void Collider::set_Size(Vector2D_f size) {
+	this->_size = size;
+
+}
+
+Vector2D_f Collider::get_Size() const {
+	return this->_size;
 
 }
