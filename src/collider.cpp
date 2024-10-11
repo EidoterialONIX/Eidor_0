@@ -5,15 +5,14 @@ Collider::Collider(
 	Vector2D_f size,
 	bool status_collision
 ) {
-	this->_position = position;
-	this->_size = size;
-	this->_status_collision = status_collision;
+	this->set_Position(position);
+	this->set_Size(size);
+	this->set_Status_Collision(status_collision);
 
 }
 
-void Collider::swich_Status_Collision() {
-	if (this->_status_collision) this->_status_collision = false;
-	else this->_status_collision = true;
+void Collider::set_Status_Collision(bool status_collision) {
+	this->_status_collision = status_collision;
 
 }
 

@@ -47,8 +47,6 @@ public:
 	void up_zoom();
 	void down_zoom();
 
-
-
 	float get_Permament_Speed() const;
 
 	void change_Velosity(int side);

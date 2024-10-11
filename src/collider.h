@@ -21,14 +21,13 @@ public:
 		bool status_collision
 	);
 
-	void swich_Status_Collision();
-	bool get_Status_Collision() const;
-
 	void set_Position(Vector2D_f position);
 	Vector2D_f get_Position() const;
 
 	void set_Size(Vector2D_f size);
 	Vector2D_f get_Size() const;
 
+	void set_Status_Collision(bool status_cpllision);
+	bool get_Status_Collision() const;
 };
 

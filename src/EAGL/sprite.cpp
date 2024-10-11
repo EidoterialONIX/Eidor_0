@@ -1,9 +1,12 @@
 #include "sprite.h"
 
 
-Sprite::Sprite(Texture_Manager* texture_manager) {
-
-	this->_texture_manager = texture_manager;
+Sprite::Sprite(
+	const char* name_sprite,
+	const char* name_link_texture
+) {
+	this->_name_sprite = name_sprite;
+	this->_name_link_texture = name_link_texture;
 
 }
 
@@ -12,104 +15,92 @@ std::string Sprite::get_Name_Sprite() const {
 
 }
 
-void Sprite::set_Position_Sprite(Vector2D_f position) {
-	this->_surface.set_Position(Vector3D_f(
-		position.x,
-		position.y,
-		0.0f
-	));
-
-}
-
-void Sprite::set_Size_Sprite(Vector2D_f size) {
-	this->_surface.set_Size(Vector3D_f(
-		size.x,
-		size.y,
-		0.0f
-	));
-
-}
-
-void Sprite::set_Color_Filter_Sprite(Vector3D_f color) {
-	this->_surface.set_Color(Vector3D_f(
-		color.x,
-		color.y,
-		color.z
-	));
-
-}
-
-void Sprite::set_Texture_Points_Sprite(
-	Vector2D_f p0,
-	Vector2D_f p1,
-	Vector2D_f p2,
-	Vector2D_f p3
-) {
-	this->_surface.set_Texture_Points(
-		p0,
-		p1,
-		p2,
-		p3
-	);
+std::string Sprite::get_Name_Link_Texture() const {
+	return this->_name_link_texture;
 
 }
 
 void Sprite::set_Sprite(
-	const char* name_sprite,
-	Vector2D_f position,
-	Vector2D_f size,
-	Vector3D_f color,
-	Vector2D_f p0,
-	Vector2D_f p1,
-	Vector2D_f p2,
-	Vector2D_f p3
+	Vector3D_f color_filter,
+	Vector2D_f texture_point_0,
+	Vector2D_f texture_point_1,
+	Vector2D_f texture_point_2,
+	Vector2D_f texture_point_3
 ) {
-	this->set_Position_Sprite(position);
-	this->set_Size_Sprite(size);
-	this->set_Color_Filter_Sprite(color);
-	this->set_Texture_Points_Sprite(
-		p0,
-		p1,
-		p2,
-		p3
+	this->set_Color_Filter(color_filter);
+	this->set_Texture_Points(
+		texture_point_0,
+		texture_point_1,
+		texture_point_2,
+		texture_point_3
 	);
-	this->_name_sprite = name_sprite;
 
 }
 
-Texture_Manager* Sprite::get_Texture_Manager() {
-	return this->_texture_manager;
+void Sprite::set_Color_Filter(Vector3D_f color_filter) {
+	this->_color_filter = color_filter;
 
 }
 
-Rect& Sprite::get_Surface()
-{
-	return this->_surface;
+Vector3D_f Sprite::get_Color_Filter() const {
+	return this->_color_filter;
+
 }
+
+void Sprite::set_Texture_Points(
+	Vector2D_f texture_point_0,
+	Vector2D_f texture_point_1,
+	Vector2D_f texture_point_2,
+	Vector2D_f texture_point_3
+) {
+	this->_texture_point_0 = texture_point_0;
+	this->_texture_point_1 = texture_point_1;
+	this->_texture_point_2 = texture_point_2;
+	this->_texture_point_3 = texture_point_3;
+
+}
+
+std::vector<Vector2D_f> Sprite::get_Texture_Points() const {
+	std::vector<Vector2D_f> texture_points;
+	texture_points.resize(4);
+
+	texture_points[0] = this->_texture_point_0;
+	texture_points[1] = this->_texture_point_1;
+	texture_points[2] = this->_texture_point_2;
+	texture_points[3] = this->_texture_point_3;
+
+	return texture_points;
+
+}
+
+
+Sprite_Manager::Sprite_Manager(Texture_Manager* texture_manager) {
+	this->_texture_manager = texture_manager;
+
+}
+
 
 void Sprite_Manager::add_Sptite(
-	Texture_Manager* texture_manager,
 	const char* name_sprite,
-	Vector2D_f position,
-	Vector2D_f size,
-	Vector3D_f color,
-	Vector2D_f p0,
-	Vector2D_f p1,
-	Vector2D_f p2,
-	Vector2D_f p3
+	const char* name_link_texture,
+	Vector3D_f color_filter,
+	Vector2D_f texture_point_0,
+	Vector2D_f texture_point_1,
+	Vector2D_f texture_point_2,
+	Vector2D_f texture_point_3
 ) {
 	this->_sprite.resize(this->_sprite.size() + 1);
-
-	this->_sprite[this->_sprite.size() - 1] = Sprite(texture_manager);
-	this->_sprite[this->_sprite.size() - 1].set_Sprite(
+	this->_sprite[this->_sprite.size() - 1] = Sprite(
 		name_sprite,
-		position,
-		size,
-		color,
-		p0,
-		p1,
-		p2,
-		p3
+		name_link_texture
+	);
+
+	this->_sprite[this->_sprite.size() - 1].set_Sprite(
+		color_filter,
+		texture_point_0,
+		texture_point_1,
+		texture_point_2,
+		texture_point_3
 	);
 
 }
@@ -133,7 +124,18 @@ void Sprite_Manager::show_Info() {
 	cout << endl;
 
 	for (int i{ 0 }; i < this->_sprite.size(); i++) {
-		cout << "Sprite " << i << " - " << "Name: " << this->_sprite[i].get_Name_Sprite() << endl;
+		cout
+			<< "Sprite "
+			<< i
+			<< " - "
+			<< "Name sprite: "
+			<< this->_sprite[i].get_Name_Sprite()
+			<< " Name link texture: "
+			<< this->_sprite[i].get_Name_Link_Texture()
+			<< endl;
 
 	}
+
+	cout << endl;
+
 }

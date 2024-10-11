@@ -1,15 +1,17 @@
 #include "texture.h"
 
 
+Texture::Texture(const char* name_texture) {
+    this->_name_texture = name_texture;
+
+}
+
+
 GLuint& Texture::get_ID() {
     return this->_ID;
 
 }
 
-void Texture::set_Name_Texture(const char* name_texture) {
-    this->_name_texture = name_texture;
-    
-}
 
 std::string Texture::get_Name_Texture() const {
     return _name_texture;
@@ -22,6 +24,7 @@ void Texture_Manager::add_Texture(
 ) {
 
     this->_texture.resize(this->_texture.size() + 1);
+    this->_texture[this->_texture.size() - 1] = Texture(name_texture);
 
     stbi_set_flip_vertically_on_load(true);
 
@@ -63,10 +66,6 @@ void Texture_Manager::add_Texture(
 
     stbi_image_free(data);
 
-
-    this->_texture[this->_texture.size() - 1].set_Name_Texture(name_texture);
-
-
 }
 
 Texture Texture_Manager::get_Texture(const char* name_texture) const {
@@ -88,7 +87,16 @@ void Texture_Manager::show_Info() {
     cout << endl;
     
     for (int i{ 0 }; i < this->_texture.size(); i++) {
-        cout << "Texture " << i << " - " << "Name: " << this->_texture[i].get_Name_Texture() << " ID: " << this->_texture[i].get_ID() << endl;
+        cout
+            << "Texture "
+            << i
+            << " - "
+            << "Name: "
+            << this->_texture[i].get_Name_Texture()
+            << " ID: "
+            << this->_texture[i].get_ID()
+            << endl;
 
     }
+
 }

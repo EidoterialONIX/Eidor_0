@@ -127,9 +127,6 @@ int main(void)
 
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
 
- 
-
-
 
     Shader_Program shader = Shader_Program(
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
@@ -139,7 +136,8 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
     Texture_Manager _texture_manager;
-    Sprite_Manager _sprite_manager;
+
+    Sprite_Manager _sprite_manager(&_texture_manager);
 
     Location_Object_Manager _location_object_manager(&_sprite_manager);
 
@@ -166,10 +164,8 @@ int main(void)
     );
 
     _sprite_manager.add_Sptite(
-        &_texture_manager,
         "Sprite_Rock",
-        Vector2D_f(100.f, 100.f),
-        Vector2D_f(100.f, 100.f),
+        "Rock",
         Vector3D_f(1.0f, 1.0f, 1.0f),
         Vector2D_f(0.0f, 1.0f),
         Vector2D_f(1.0f, 1.0f),
@@ -177,9 +173,75 @@ int main(void)
         Vector2D_f(0.0f, 0.0f)
     );
 
+    _sprite_manager.add_Sptite(
+        "Sprite_Icon_Personal_Default",
+        "Icon_Personal",
+        Vector3D_f(1.0f, 1.0f, 1.0f),
+        Vector2D_f(0.0f, 0.5f),
+        Vector2D_f(0.0f, 1.0f),
+        Vector2D_f(0.5f, 1.0f),
+        Vector2D_f(0.5f, 0.5f)
+    );
+
+    _sprite_manager.add_Sptite(
+        "Sprite_Icon_Personal_Hover",
+        "Icon_Personal",
+        Vector3D_f(1.0f, 1.0f, 1.0f),
+        Vector2D_f(0.5f, 0.5f),
+        Vector2D_f(0.5f, 1.0f),
+        Vector2D_f(1.0f, 1.0f),
+        Vector2D_f(1.0f, 0.5f)
+    );
+
+    _sprite_manager.add_Sptite(
+        "Sprite_Icon_Personal_Active",
+        "Icon_Personal",
+        Vector3D_f(1.0f, 1.0f, 1.0f),
+        Vector2D_f(0.0f, 0.0f),
+        Vector2D_f(0.0f, 0.5f),
+        Vector2D_f(0.5f, 0.5f),
+        Vector2D_f(0.5f, 0.0f)
+    );
+
     _location_object_manager.add_Location_Object(
         "Sprite_Rock",
         Vector2D_f(30.f, 50.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Rock",
+        Vector2D_f(170.f, 40.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Rock",
+        Vector2D_f(250.f, 130.f),
+        Vector2D_f(80.f, 70.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Rock",
+        Vector2D_f(30.f, 50.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Icon_Personal_Default",
+        Vector2D_f(100.f, 100.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Icon_Personal_Hover",
+        Vector2D_f(200.f, 100.f),
+        Vector2D_f(100.f, 120.f),
+        true
+    );
+    _location_object_manager.add_Location_Object(
+        "Sprite_Icon_Personal_Active",
+        Vector2D_f(300.f, 100.f),
         Vector2D_f(100.f, 120.f),
         true
     );
@@ -202,20 +264,13 @@ int main(void)
         
         /// Render background ----
 
-        render.Draw(background, shader_bg, _texture_manager.get_Texture("Background"));
-        render.Draw(slot, shader_bg, _texture_manager.get_Texture("Slot"));
+
 
 
         /// Render object ----
 
-        std::vector<Rect> render_object = _camera.pull_Object(_location_object_manager.pull_Location_Object());
 
-
-        render.Draw(
-            _sprite_manager.get_Sprite("Sprite_Rock").get_Surface(),
-            shader,
-            _sprite_manager.get_Sprite("Sprite_Rock").get_Texture_Manager()->get_Texture("Rock")
-        );
+        /// Render interface ----
         
 
         /* Swap front and back buffers */

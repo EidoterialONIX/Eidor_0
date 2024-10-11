@@ -17,14 +17,14 @@ private:
     GLuint _ID = 0;
     std::string _name_texture;
 
-
 public:
 
     Texture() = default;
 
+    Texture(const char* name_texture);
+
     GLuint& get_ID();
 
-    void set_Name_Texture(const char* name_texture);
     std::string get_Name_Texture() const;
 
 };

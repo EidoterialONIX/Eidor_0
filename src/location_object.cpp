@@ -1,25 +1,17 @@
 #include "location_object.h"
 
 
+
+void Location_Object::set_Name_Link_Sprite(const char* name_link_sprite) {
+	this->_name_link_sprite = name_link_sprite;
+
+}
+
 std::string Location_Object::get_Name_Link_Sprite() const {
 	return this->_name_link_sprite;
 
 }
 
-void Location_Object::set_Position_Collider(Vector2D_f position) {
-	this->_collider.set_Position(position);
-
-}
-
-void Location_Object::set_Size_Collider(Vector2D_f size) {
-	this->_collider.set_Size(size);
-
-}
-
-void Location_Object::swich_Status_Collision() {
-	this->_collider.swich_Status_Collision();
-
-}
 
 void Location_Object::set_Location_Object(
 	const char* name_link_sprite,
@@ -27,7 +19,7 @@ void Location_Object::set_Location_Object(
 	Vector2D_f size,
 	bool status_collision
 ) {
-	this->_name_link_sprite = name_link_sprite;
+	this->set_Name_Link_Sprite(name_link_sprite);
 	
 	this->_collider = Collider(
 		position,
@@ -37,10 +29,39 @@ void Location_Object::set_Location_Object(
 
 }
 
-Collider Location_Object::get_Collider() const {
-	return this->_collider;
+void Location_Object::set_Position(Vector2D_f position) {
+	this->_collider.set_Position(position);
 
 }
+
+Vector2D_f Location_Object::get_Position() const {
+	return this->_collider.get_Position();
+
+}
+
+void Location_Object::set_Size(Vector2D_f size) {
+	this->_collider.set_Size(size);
+
+}
+
+Vector2D_f Location_Object::get_Size() const {
+	return this->_collider.get_Size();
+
+}
+
+void Location_Object::set_Status_Collision(bool status_collision) {
+	this->_collider.set_Status_Collision(status_collision);
+
+}
+
+bool Location_Object::get_Status_Collision() const {
+	return this->_collider.get_Status_Collision();
+
+}
+
+
+
+
 
 Location_Object_Manager::Location_Object_Manager(Sprite_Manager* sprite_manager) {
 	this->_sprite_manager = sprite_manager;
@@ -63,24 +84,6 @@ void Location_Object_Manager::add_Location_Object(
 
 }
 
-std::vector<Rect> Location_Object_Manager::pull_Location_Object() {
-
-	std::vector<Rect> location_object;
-
-	location_object.resize(this->_location_object.size());
-
-	for (int i{ 0 }; i < location_object.size(); i++) {
-		location_object[i] = this->_sprite_manager->get_Sprite(this->_location_object[i].get_Name_Link_Sprite()).get_Surface();
-
-	}
-
-	return location_object;
-}
-
-std::vector<Location_Object>& Location_Object_Manager::get_Location_Object() {
-	return this->_location_object;
-
-}
 
 void Location_Object_Manager::show_Info() {
 	using namespace std;
@@ -89,7 +92,13 @@ void Location_Object_Manager::show_Info() {
 	cout << endl;
 
 	for (int i{ 0 }; i < this->_location_object.size(); i++) {
-		cout << "Location object " << i << " - " << "Name link sprite: " << this->_location_object[i].get_Name_Link_Sprite() << endl;
+		cout
+			<< "Location object "
+			<< i
+			<< " - "
+			<< "Name link sprite: "
+			<< this->_location_object[i].get_Name_Link_Sprite()
+			<< endl;
 
 	}
 

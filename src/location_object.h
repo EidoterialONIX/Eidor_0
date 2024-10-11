@@ -16,6 +16,7 @@ public:
 
 	Location_Object() = default;
 
+	void set_Name_Link_Sprite(const char* name_link_sprite);
 	std::string get_Name_Link_Sprite() const;
 
 	void set_Location_Object(
@@ -25,11 +26,14 @@ public:
 		bool status_collision
 	);
 
-	void set_Position_Collider(Vector2D_f position);
-	void set_Size_Collider(Vector2D_f size);
-	void swich_Status_Collision();
+	void set_Position(Vector2D_f position);
+	Vector2D_f get_Position() const;
 
-	Collider get_Collider() const;
+	void set_Size(Vector2D_f size);
+	Vector2D_f get_Size() const;
+
+	void set_Status_Collision(bool status_collision);
+	bool get_Status_Collision() const;
 
 };
 
@@ -55,9 +59,6 @@ public:
 		Vector2D_f size,
 		bool status_collision
 	);
-
-	std::vector<Location_Object>& get_Location_Object();
-	std::vector<Rect> pull_Location_Object();
 
 	void show_Info();
 
