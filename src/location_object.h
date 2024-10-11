@@ -60,6 +60,10 @@ public:
 		bool status_collision
 	);
 
+	Sprite_Manager* get_Sprite_Manager();
+
+	std::vector<Location_Object>& get_Location_Objects();
+
 	void show_Info();
 
 };

@@ -84,6 +84,15 @@ void Location_Object_Manager::add_Location_Object(
 
 }
 
+Sprite_Manager* Location_Object_Manager::get_Sprite_Manager() {
+	return this->_sprite_manager;
+
+}
+
+std::vector<Location_Object>& Location_Object_Manager::get_Location_Objects() {
+	return this->_location_object;
+
+}
 
 void Location_Object_Manager::show_Info() {
 	using namespace std;
@@ -101,6 +110,5 @@ void Location_Object_Manager::show_Info() {
 			<< endl;
 
 	}
-
 
 }

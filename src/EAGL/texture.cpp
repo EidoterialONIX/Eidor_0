@@ -68,7 +68,7 @@ void Texture_Manager::add_Texture(
 
 }
 
-Texture Texture_Manager::get_Texture(const char* name_texture) const {
+Texture Texture_Manager::get_Texture(std::string name_texture) const {
     for (int i{ 0 }; i < this->_texture.size(); i++) {
 
         if (this->_texture[i].get_Name_Texture() == name_texture) return this->_texture[i];

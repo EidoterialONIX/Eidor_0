@@ -23,7 +23,7 @@ struct Option {
 
 Option _option;
 
-Camera _camera(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]), Vector2D_f(3000, 5000));
+Camera _camera;
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
@@ -123,9 +123,8 @@ int main(void)
 
     glClearColor(1, 1, 0, 1);
 
-
-
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
+    _camera = Camera(&render, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]), Vector2D_f(3000, 5000));
 
 
     Shader_Program shader = Shader_Program(
@@ -140,6 +139,49 @@ int main(void)
     Sprite_Manager _sprite_manager(&_texture_manager);
 
     Location_Object_Manager _location_object_manager(&_sprite_manager);
+
+
+    Rect bg;
+
+    bg.set_Position(
+        Vector3D_f(
+            0.0f,
+            0.0f,
+            0.0f
+        )
+    );
+    bg.set_Size(
+        Vector3D_f(
+            _option.WINDOW_SIZE[0],
+            _option.WINDOW_SIZE[1],
+            0.0f
+        )
+    );
+    bg.set_Color(
+        Vector3D_f(
+            1.0f,
+            1.0f,
+            1.0f
+        )
+    );
+    bg.set_Texture_Points(
+        Vector2D_f(
+            0.0f,
+            0.0f
+        ),
+        Vector2D_f(
+            0.0f,
+            1.0f
+        ),
+        Vector2D_f(
+            1.0f,
+            1.0f
+        ),
+        Vector2D_f(
+            1.0f,
+            0.0f
+        )
+    );
 
     
     _texture_manager.add_Texture(
@@ -252,9 +294,16 @@ int main(void)
     _location_object_manager.show_Info();
     _camera.show_Info_Camera();
 
+
+    int counter = 0;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
+
+        if (counter == 60) counter = 0;
+        else counter++;
+        std::cout << counter << std::endl;
 
         _camera.move_Camera();
 
@@ -264,10 +313,19 @@ int main(void)
         
         /// Render background ----
 
-
+        _camera.camera_Vision(
+            bg,
+            shader_bg,
+            _texture_manager.get_Texture("Background")
+        );
 
 
         /// Render object ----
+
+        _camera.camera_Vision(
+            &_location_object_manager,
+            shader
+        );
 
 
         /// Render interface ----

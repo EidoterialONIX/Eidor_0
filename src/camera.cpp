@@ -3,14 +3,17 @@
 
 
 
-Camera::Camera(Vector2D_f size_screen, Vector2D_f max_size_map) {
+Camera::Camera(
+	Render* render,
+	Vector2D_f size_screen,
+	Vector2D_f max_size_map
+) {
+	this->_render = render;
+
 	this->_position_camera = Vector2D_f(0.0f, 0.0f);
 
 	this->_size_screen = size_screen;
 	this->_max_size_map = max_size_map;
-
-	this->_render_object_conteiner.resize(60);
-	this->_count_render_object = 0;
 
 	this->_permament_speed = 1.0f;
 	this->_velosity = Vector2D_f(0.0f, 0.0f);
@@ -42,11 +45,6 @@ void Camera::_UPDATE() {
 
 }
 
-Vector2D_f Camera::get_Max_Size_Map() const {
-	return this->_max_size_map;
-
-}
-
 
 void Camera::move_Camera() {
 	this->_position_camera += this->_velosity;
@@ -56,34 +54,6 @@ void Camera::move_Camera() {
 
 	this->_UPDATE();
 
-}
-
-std::vector<Rect> Camera::pull_Object(std::vector<Rect> object_conteiner) {
-	this->_count_render_object = 0;
-
-	for (int i{ 0 }; i < object_conteiner.size(); i++) {
-
-		if (object_conteiner[i].get_Position().x <= this->_position_render_zone.x + this->_size_render_zone.x ||
-			object_conteiner[i].get_Position().x + object_conteiner[i].get_Size().x >= this->_position_render_zone.x) {
-
-			if (object_conteiner[i].get_Position().y <= this->_position_render_zone.y + this->_size_render_zone.y ||
-				object_conteiner[i].get_Position().y + object_conteiner[i].get_Size().y >= this->_position_render_zone.y) {
-
-				this->_render_object_conteiner[this->_count_render_object].set_Position(object_conteiner[i].get_Position());
-				this->_render_object_conteiner[this->_count_render_object].set_Size(object_conteiner[i].get_Size());
-				this->_render_object_conteiner[this->_count_render_object].set_Color(Vector3D_f(1.0f, 1.0f, 1.0f));
-				this->_render_object_conteiner[this->_count_render_object].set_Texture_Points(Vector2D_f(0.0f, 1.0f), Vector2D_f(1.0f, 1.0f), Vector2D_f(1.0f, 0.0f), Vector2D_f(0.0f, 0.0f));
-
-				this->_render_object_conteiner[this->_count_render_object].set_Position(object_conteiner[i].get_Position() - Vector3D_f(this->_position_camera.x, this->_position_camera.y, 0.0f));
-				this->_render_object_conteiner[this->_count_render_object].set_Size(object_conteiner[i].get_Size() * Vector3D_f(this->_correct_zoom, this->_correct_zoom, 1.0f));
-
-				this->_count_render_object++;
-			}
-		}
-
-	}  
-
-	return this->_render_object_conteiner;
 }
 
 void Camera::reset_zoom() {
@@ -137,8 +107,81 @@ void Camera::reset_velosity() {
 
 }
 
-unsigned int Camera::get_Count_Render_Object() const {
-	return this->_count_render_object;
+void Camera::camera_Vision(
+	Rect surface,
+	Shader_Program shader,
+	Texture background
+) {
+	this->_render->Draw(surface, shader, background);
+
+}
+
+void Camera::camera_Vision(
+	Location_Object_Manager* location_object_manager,
+	Shader_Program shader
+) {
+	
+	Rect surface;
+
+	for (int i{ 0 }; i < location_object_manager->get_Location_Objects().size(); i++) {
+
+		if (
+			location_object_manager->get_Location_Objects()[i].get_Position().x +
+			location_object_manager->get_Location_Objects()[i].get_Size().x >= 
+			this->_position_render_zone.x ||
+			location_object_manager->get_Location_Objects()[i].get_Position().x <=
+			this->_position_render_zone.x + this->_size_render_zone.x
+			)
+			if (
+				location_object_manager->get_Location_Objects()[i].get_Position().y +
+				location_object_manager->get_Location_Objects()[i].get_Size().y >=
+				this->_position_render_zone.y ||
+				location_object_manager->get_Location_Objects()[i].get_Position().y <=
+				this->_position_render_zone.y + this->_size_render_zone.y
+				) {
+
+				surface.set_Position(
+					Vector3D_f(
+						location_object_manager->get_Location_Objects()[i].get_Position().x,
+						location_object_manager->get_Location_Objects()[i].get_Position().y,
+						0.0f
+					)
+				);
+				surface.set_Size(
+					Vector3D_f(
+						location_object_manager->get_Location_Objects()[i].get_Size().x,
+						location_object_manager->get_Location_Objects()[i].get_Size().y,
+						0.0f
+					)
+				);
+				surface.set_Color(
+					location_object_manager->get_Sprite_Manager()->get_Sprite(
+						location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Color_Filter()
+				);
+				surface.set_Texture_Points(
+					location_object_manager->get_Sprite_Manager()->get_Sprite(
+						location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Texture_Points()[0],
+					location_object_manager->get_Sprite_Manager()->get_Sprite(
+						location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Texture_Points()[1],
+					location_object_manager->get_Sprite_Manager()->get_Sprite(
+						location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Texture_Points()[2],
+					location_object_manager->get_Sprite_Manager()->get_Sprite(
+						location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Texture_Points()[3]
+				);
+
+				this->_render->Draw(
+					surface,
+					shader,
+					location_object_manager->get_Sprite_Manager()->get_Texture_Manager()->get_Texture(
+						location_object_manager->get_Sprite_Manager()->get_Sprite(
+							location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()
+						).get_Name_Link_Texture()
+					)
+				);
+
+			}
+
+	}
 
 }
 

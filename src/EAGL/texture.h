@@ -46,7 +46,7 @@ public:
         const char* type_image
     );
 
-    Texture get_Texture(const char* name_texture) const;
+    Texture get_Texture(std::string name_texture) const;
     
     void show_Info();
 

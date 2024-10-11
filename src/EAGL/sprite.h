@@ -79,6 +79,8 @@ public:
 		Vector2D_f texture_point_3
 	);
 
+	Texture_Manager* get_Texture_Manager();
+
 	Sprite get_Sprite(std::string name_sprite);
 
 	void show_Info();

@@ -105,6 +105,12 @@ void Sprite_Manager::add_Sptite(
 
 }
 
+Texture_Manager* Sprite_Manager::get_Texture_Manager() {
+	return this->_texture_manager;
+
+}
+
+
 Sprite Sprite_Manager::get_Sprite(std::string name_sprite) {
 	for (int i{ 0 }; i < this->_sprite.size(); i++) {
 

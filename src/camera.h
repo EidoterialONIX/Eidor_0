@@ -1,15 +1,19 @@
 #pragma once
 
 #include "EAGL/vectors.h"
-#include <vector>
+#include "EAGL/render.h"
 #include "EAGL/rect.h"
 
+#include <vector>
 #include <iostream>
+#include "location_object.h"
 
 
 
 class Camera {
 private:
+
+	Render* _render;
 
 	Vector2D_f _size_screen;
 	Vector2D_f _max_size_map;
@@ -19,10 +23,6 @@ private:
 
 	Vector2D_f _position_render_zone;
 	Vector2D_f _size_render_zone;	
-
-	std::vector<Rect> _render_object_conteiner;
-	unsigned int _count_render_object;
-
 
 	float _permament_speed;
 	Vector2D_f _velosity;
@@ -35,13 +35,15 @@ private:
 	
 public:
 
-	Camera(Vector2D_f size_screen, Vector2D_f max_size_map);
+	Camera() = default;
 
-	Vector2D_f get_Max_Size_Map() const;
+	Camera(
+		Render* render,
+		Vector2D_f size_screen,
+		Vector2D_f max_size_map
+		);
 
 	void move_Camera();
-
-	std::vector<Rect> pull_Object(std::vector<Rect> object_conteiner);
 	
 	void reset_zoom();
 	void up_zoom();
@@ -52,7 +54,16 @@ public:
 	void change_Velosity(int side);
 	void reset_velosity();
 
-	unsigned int get_Count_Render_Object() const;
+	void camera_Vision(
+		Rect surface,
+		Shader_Program shader,
+		Texture background
+	);
+
+	void camera_Vision(
+		Location_Object_Manager* location_object_manager,
+		Shader_Program shader
+	);
 
 	void show_Info_Camera() const;
 
