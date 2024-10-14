@@ -65,33 +65,27 @@ Interface::Interface(Assets* assets) {
     this->_sprite = Sprite_Manager(&this->_texture);
 
     /// LOAD ASSETS ///
-
     assets->load_asset(
         &this->_texture,
         &this->_sprite,
-        "icon_personal.jpg",
-        "Icon_Personal_Texture",
+        "Button.jpg",
+        "Button_Texture",
         "JPG",
-        3,
+        2,
         std::vector<std::string>{
-        "Sprite_Default",
-            "Sprite_Hover",
-            "Sprite_Active"
+        "Sprite_Button_Default",
+            "Sprite_Button_Hover"
     },
-        64.0,
+        128.0,
         64.0,
         std::vector<Vector2D_f>{
         Vector2D_f(
             0,
-            32
+            128
         ),
             Vector2D_f(
-                32,
-                64
-            ),
-            Vector2D_f(
                 0,
-                32
+                128
             )
     },
         std::vector<Vector2D_f>{
@@ -99,10 +93,6 @@ Interface::Interface(Assets* assets) {
             0,
             32
         ),
-            Vector2D_f(
-                0,
-                32
-            ),
             Vector2D_f(
                 32,
                 64
@@ -111,13 +101,11 @@ Interface::Interface(Assets* assets) {
     );
 
 
-
-
     /// SET MAIN MENU INTERFACE
 
     this->_main_menu_interface.resize(3);
     this->_main_menu_interface[0].set_Interface_Element(
-        "Sprite_Default",
+        "Sprite_Button_Default",
         Vector2D_f(
             200.f,
             40.f
@@ -129,7 +117,7 @@ Interface::Interface(Assets* assets) {
         true
     );
     this->_main_menu_interface[1].set_Interface_Element(
-        "Sprite_Hover",
+        "Sprite_Button_Default",
         Vector2D_f(
             200.f,
             160.f
@@ -141,7 +129,7 @@ Interface::Interface(Assets* assets) {
         true
     );
     this->_main_menu_interface[2].set_Interface_Element(
-        "Sprite_Active",
+        "Sprite_Button_Default",
         Vector2D_f(
             200.f,
             280.f
@@ -152,6 +140,7 @@ Interface::Interface(Assets* assets) {
         ),
         true
     );
+
 
 }
 

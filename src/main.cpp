@@ -198,11 +198,10 @@ int main(void)
 
     
 
-    //Assets _assets("E:../src/assets/");
-    Assets _assets("E:../Debug/assets/");
+    Assets _assets("E:../src/assets/");
+    //Assets _assets("E:../Debug/assets/");
 
     Interface _interface(&_assets);
-
 
     _interface.get_Texture().show_Info();
     _interface.get_Sprite().show_Info();
@@ -213,15 +212,13 @@ int main(void)
 
     int frame_detector = 0;
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    
+
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
-
-        if (frame_detector == 60) frame_detector = 0;
-        else frame_detector++;
-        std::cout << frame_detector << std::endl;
-
+        glfwSetWindowTitle(pWindow, "12");
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 

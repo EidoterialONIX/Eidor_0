@@ -49,8 +49,8 @@ void Texture_Manager::add_Texture(
         }
         else if (type_image == "PNG") {
 
-            std::cout << "PNG" << std::endl;
-            stbi_image_free(data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
 
         }
         else {
