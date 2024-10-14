@@ -174,8 +174,7 @@ void Camera::camera_Vision(
 					shader,
 					location_object_manager->get_Sprite_Manager()->get_Texture_Manager()->get_Texture(
 						location_object_manager->get_Sprite_Manager()->get_Sprite(
-							location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()
-						).get_Name_Link_Texture()
+							location_object_manager->get_Location_Objects()[i].get_Name_Link_Sprite()).get_Name_Link_Texture()
 					)
 				);
 
@@ -183,6 +182,56 @@ void Camera::camera_Vision(
 
 	}
 
+}
+
+void Camera::camera_Vision(
+	Interface* _interface,
+	Shader_Program shader
+) {
+
+	Rect surface;
+
+	for (int i{ 0 }; i < _interface->get_Main_Menu_Interface().size(); i++) {
+
+		surface.set_Position(
+			Vector3D_f(
+				_interface->get_Main_Menu_Interface()[i].get_Position().x,
+				_interface->get_Main_Menu_Interface()[i].get_Position().y,
+				0.0f
+			)
+		);
+		surface.set_Size(
+			Vector3D_f(
+				_interface->get_Main_Menu_Interface()[i].get_Size().x,
+				_interface->get_Main_Menu_Interface()[i].get_Size().y,
+				0.0f
+			)
+		);
+		surface.set_Color(
+			_interface->get_Sprite().get_Sprite(
+				_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Color_Filter()
+		);
+		surface.set_Texture_Points(
+			_interface->get_Sprite().get_Sprite(
+				_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Texture_Points()[0],
+			_interface->get_Sprite().get_Sprite(
+				_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Texture_Points()[1],
+			_interface->get_Sprite().get_Sprite(
+				_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Texture_Points()[2],
+			_interface->get_Sprite().get_Sprite(
+				_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Texture_Points()[3]
+		);
+
+		this->_render->Draw(
+			surface,
+			shader,
+			_interface->get_Sprite().get_Texture_Manager()->get_Texture(
+				_interface->get_Sprite().get_Sprite(
+					_interface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite()).get_Name_Link_Texture()
+			)
+		);
+
+	};
 }
 
 void Camera::show_Info_Camera() const {

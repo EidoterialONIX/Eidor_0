@@ -2,8 +2,8 @@
 
 
 Sprite::Sprite(
-	const char* name_sprite,
-	const char* name_link_texture
+	std::string name_sprite,
+	std::string name_link_texture
 ) {
 	this->_name_sprite = name_sprite;
 	this->_name_link_texture = name_link_texture;
@@ -81,8 +81,8 @@ Sprite_Manager::Sprite_Manager(Texture_Manager* texture_manager) {
 
 
 void Sprite_Manager::add_Sptite(
-	const char* name_sprite,
-	const char* name_link_texture,
+	std::string name_sprite,
+	std::string name_link_texture,
 	Vector3D_f color_filter,
 	Vector2D_f texture_point_0,
 	Vector2D_f texture_point_1,

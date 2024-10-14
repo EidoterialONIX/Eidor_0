@@ -28,8 +28,8 @@ public:
 	Sprite() = default;
 
 	Sprite(
-		const char* name_sprite,
-		const char* name_link_texture
+		std::string name_sprite,
+		std::string name_link_texture
 	);
 
 	std::string get_Name_Sprite() const;
@@ -70,8 +70,8 @@ public:
 	Sprite_Manager(Texture_Manager* texture_manager);
 
 	void add_Sptite(
-		const char* name_sprite,
-		const char* name_link_texture,
+		std::string name_sprite,
+		std::string name_link_texture,
 		Vector3D_f color_filter,
 		Vector2D_f texture_point_0,
 		Vector2D_f texture_point_1,

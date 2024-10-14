@@ -21,7 +21,7 @@ public:
 
     Texture() = default;
 
-    Texture(const char* name_texture);
+    Texture(std::string name_texture);
 
     GLuint& get_ID();
 
@@ -41,9 +41,9 @@ public:
     Texture_Manager() = default;
 
     void add_Texture(
-        const char* path_texture,
-        const char* name_texture,
-        const char* type_image
+        std::string path_texture,
+        std::string name_texture,
+        std::string type_image
     );
 
     Texture get_Texture(std::string name_texture) const;

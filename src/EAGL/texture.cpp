@@ -1,7 +1,7 @@
 #include "texture.h"
 
 
-Texture::Texture(const char* name_texture) {
+Texture::Texture(std::string name_texture) {
     this->_name_texture = name_texture;
 
 }
@@ -18,15 +18,15 @@ std::string Texture::get_Name_Texture() const {
 }
 
 void Texture_Manager::add_Texture(
-    const char* path_texture,
-    const char* name_texture,
-    const char* type_image
+    std::string path_texture,
+    std::string name_texture,
+    std::string type_image
 ) {
 
     this->_texture.resize(this->_texture.size() + 1);
     this->_texture[this->_texture.size() - 1] = Texture(name_texture);
 
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(false);
 
     glGenTextures(1, &this->_texture[this->_texture.size() - 1].get_ID());
     glBindTexture(GL_TEXTURE_2D, this->_texture[this->_texture.size() - 1].get_ID());
@@ -38,16 +38,16 @@ void Texture_Manager::add_Texture(
 
     int width, height, nrChannals;
 
-    unsigned char* data = stbi_load(path_texture, &width, &height, &nrChannals, 0);
+    unsigned char* data = stbi_load(path_texture.c_str(), &width, &height, &nrChannals, 0);
 
     if (data) {
 
-        if (type_image = "JPG") {
+        if (type_image == "JPG") {
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
 
         }
-        else if (type_image = "PNG") {
+        else if (type_image == "PNG") {
 
             std::cout << "PNG" << std::endl;
             stbi_image_free(data);

@@ -8,6 +8,8 @@
 #include "camera.h"
 #include "location_object.h"
 
+#include "load_assets.h"
+#include "interface.h"
 
 
 //#include "player.h"
@@ -134,176 +136,22 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Vertex.txt",
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
-    Texture_Manager _texture_manager;
 
-    Sprite_Manager _sprite_manager(&_texture_manager);
+    Assets _assets("E:../src/assets/");
 
-    Location_Object_Manager _location_object_manager(&_sprite_manager);
-
-
-    Rect bg;
-
-    bg.set_Position(
-        Vector3D_f(
-            0.0f,
-            0.0f,
-            0.0f
-        )
-    );
-    bg.set_Size(
-        Vector3D_f(
-            _option.WINDOW_SIZE[0],
-            _option.WINDOW_SIZE[1],
-            0.0f
-        )
-    );
-    bg.set_Color(
-        Vector3D_f(
-            1.0f,
-            1.0f,
-            1.0f
-        )
-    );
-    bg.set_Texture_Points(
-        Vector2D_f(
-            0.0f,
-            0.0f
-        ),
-        Vector2D_f(
-            0.0f,
-            1.0f
-        ),
-        Vector2D_f(
-            1.0f,
-            1.0f
-        ),
-        Vector2D_f(
-            1.0f,
-            0.0f
-        )
-    );
-
-    
-    _texture_manager.add_Texture(
-        "E:/C++ projects/Eidor_0/bgg_3.jpg",
-        "Background",
-        "JPG"
-    );
-    _texture_manager.add_Texture(
-        "E:/C++ projects/Eidor_0/rock.jpg",
-        "Rock",
-        "JPG"
-    );
-    _texture_manager.add_Texture(
-        "E:/C++ projects/Eidor_0/slot.jpg",
-        "Slot",
-        "JPG"
-    );
-    _texture_manager.add_Texture(
-        "E:/C++ projects/Eidor_0/icon_personal.jpg",
-        "Icon_Personal",
-        "JPG"
-    );
-
-    _sprite_manager.add_Sptite(
-        "Sprite_Rock",
-        "Rock",
-        Vector3D_f(1.0f, 1.0f, 1.0f),
-        Vector2D_f(0.0f, 1.0f),
-        Vector2D_f(1.0f, 1.0f),
-        Vector2D_f(1.0f, 0.0f),
-        Vector2D_f(0.0f, 0.0f)
-    );
-
-    _sprite_manager.add_Sptite(
-        "Sprite_Icon_Personal_Default",
-        "Icon_Personal",
-        Vector3D_f(1.0f, 1.0f, 1.0f),
-        Vector2D_f(0.0f, 0.5f),
-        Vector2D_f(0.0f, 1.0f),
-        Vector2D_f(0.5f, 1.0f),
-        Vector2D_f(0.5f, 0.5f)
-    );
-
-    _sprite_manager.add_Sptite(
-        "Sprite_Icon_Personal_Hover",
-        "Icon_Personal",
-        Vector3D_f(1.0f, 1.0f, 1.0f),
-        Vector2D_f(0.5f, 0.5f),
-        Vector2D_f(0.5f, 1.0f),
-        Vector2D_f(1.0f, 1.0f),
-        Vector2D_f(1.0f, 0.5f)
-    );
-
-    _sprite_manager.add_Sptite(
-        "Sprite_Icon_Personal_Active",
-        "Icon_Personal",
-        Vector3D_f(1.0f, 1.0f, 1.0f),
-        Vector2D_f(0.0f, 0.0f),
-        Vector2D_f(0.0f, 0.5f),
-        Vector2D_f(0.5f, 0.5f),
-        Vector2D_f(0.5f, 0.0f)
-    );
-
-    _location_object_manager.add_Location_Object(
-        "Sprite_Rock",
-        Vector2D_f(30.f, 50.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Rock",
-        Vector2D_f(170.f, 40.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Rock",
-        Vector2D_f(250.f, 130.f),
-        Vector2D_f(80.f, 70.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Rock",
-        Vector2D_f(30.f, 50.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Icon_Personal_Default",
-        Vector2D_f(100.f, 100.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Icon_Personal_Hover",
-        Vector2D_f(200.f, 100.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
-    _location_object_manager.add_Location_Object(
-        "Sprite_Icon_Personal_Active",
-        Vector2D_f(300.f, 100.f),
-        Vector2D_f(100.f, 120.f),
-        true
-    );
+    Interface _interface(&_assets);
 
 
-    _texture_manager.show_Info();
-    _sprite_manager.show_Info();
-    _location_object_manager.show_Info();
+    _interface.get_Texture().show_Info();
+    _interface.get_Sprite().show_Info();
+
     _camera.show_Info_Camera();
 
 
-    int counter = 0;
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
-
-        if (counter == 60) counter = 0;
-        else counter++;
-        std::cout << counter << std::endl;
 
         _camera.move_Camera();
 
@@ -313,19 +161,10 @@ int main(void)
         
         /// Render background ----
 
-        _camera.camera_Vision(
-            bg,
-            shader_bg,
-            _texture_manager.get_Texture("Background")
-        );
-
 
         /// Render object ----
 
-        _camera.camera_Vision(
-            &_location_object_manager,
-            shader
-        );
+        _camera.camera_Vision(&_interface, shader);
 
 
         /// Render interface ----

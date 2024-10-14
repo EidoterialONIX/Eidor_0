@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include "location_object.h"
+#include "interface.h"
 
 
 
@@ -62,6 +63,11 @@ public:
 
 	void camera_Vision(
 		Location_Object_Manager* location_object_manager,
+		Shader_Program shader
+	);
+
+	void camera_Vision(
+		Interface* _interface,
 		Shader_Program shader
 	);
 
