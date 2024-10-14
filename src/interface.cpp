@@ -70,8 +70,8 @@ Interface::Interface(Assets* assets) {
         &this->_texture,
         &this->_sprite,
         "icon_personal.jpg",
-        "Icon_Personat_Texture",
-        "PNG",
+        "Icon_Personal_Texture",
+        "JPG",
         3,
         std::vector<std::string>{
         "Sprite_Default",

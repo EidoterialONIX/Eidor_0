@@ -5,6 +5,8 @@
 #include "EAGL/render.h"
 #include "EAGL/sprite.h"
 
+#include "collision.h"
+
 #include "camera.h"
 #include "location_object.h"
 
@@ -20,12 +22,17 @@
 struct Option {
 
     int WINDOW_SIZE[2] = { 640, 480 };
+    double CURSOR_POSITION[2] = { 0.0f, 0.0f };
 
 };
+
+Collision _collision;
 
 Option _option;
 
 Camera _camera;
+
+Interface* _pinterface;
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
@@ -82,6 +89,56 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
     }
 }
 
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
+
+    glfwGetCursorPos(window, &_option.CURSOR_POSITION[0], &_option.CURSOR_POSITION[1]);
+
+    for (int i{ 0 }; i < _pinterface->get_Main_Menu_Interface().size(); i++) {
+        if (_pinterface->get_Main_Menu_Interface()[i].get_Status_Collision()) {
+            if (_collision.check_Interface_Collision(
+                _pinterface->get_Main_Menu_Interface()[i].get_Position(),
+                _pinterface->get_Main_Menu_Interface()[i].get_Size(),
+                _option.CURSOR_POSITION[0],
+                _option.CURSOR_POSITION[1]
+            )) {
+                if (_pinterface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite() == "Sprite_Default") {
+                    _pinterface->get_Main_Menu_Interface()[i].set_Name_Link_Sprite("Sprite_Hover");
+                }
+                else if (_pinterface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite() == "Sprite_Hover"){
+                    _pinterface->get_Main_Menu_Interface()[i].set_Name_Link_Sprite("Sprite_Default");
+                }
+            }
+        }
+    }
+
+}
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+        glfwGetCursorPos(window, &_option.CURSOR_POSITION[0], &_option.CURSOR_POSITION[1]);
+
+        
+        for (int i{ 0 }; i < _pinterface->get_Main_Menu_Interface().size(); i++) {
+            if (_pinterface->get_Main_Menu_Interface()[i].get_Status_Collision()) {
+                if (_collision.check_Interface_Collision(
+                    _pinterface->get_Main_Menu_Interface()[i].get_Position(),
+                    _pinterface->get_Main_Menu_Interface()[i].get_Size(),
+                    _option.CURSOR_POSITION[0],
+                    _option.CURSOR_POSITION[1]
+                )) {
+                    if (_pinterface->get_Main_Menu_Interface()[i].get_Name_Link_Sprite() == "Sprite_Hover") {
+                        _pinterface->get_Main_Menu_Interface()[i].set_Name_Link_Sprite("Sprite_Active");
+                    }
+                }
+            }
+        }
+        
+    }
+       
+}
+
 
 int main(void)
 {
@@ -107,7 +164,11 @@ int main(void)
 
 
     glfwSetWindowSizeCallback(pWindow, glfwWindowSizeCallback);
+
     glfwSetKeyCallback(pWindow, glfwKeyCallback);
+
+    glfwSetCursorPosCallback(pWindow, cursor_position_callback);
+    glfwSetMouseButtonCallback(pWindow, mouse_button_callback);
 
 
 
@@ -123,8 +184,6 @@ int main(void)
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
-    glClearColor(1, 1, 0, 1);
-
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
     _camera = Camera(&render, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]), Vector2D_f(3000, 5000));
 
@@ -137,7 +196,10 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
 
-    Assets _assets("E:../src/assets/");
+    
+
+    //Assets _assets("E:../src/assets/");
+    Assets _assets("E:../Debug/assets/");
 
     Interface _interface(&_assets);
 
@@ -145,18 +207,35 @@ int main(void)
     _interface.get_Texture().show_Info();
     _interface.get_Sprite().show_Info();
 
+    _pinterface = &_interface;
+
     _camera.show_Info_Camera();
 
+    int frame_detector = 0;
 
-
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
 
-        _camera.move_Camera();
+        if (frame_detector == 60) frame_detector = 0;
+        else frame_detector++;
+        std::cout << frame_detector << std::endl;
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+
+
+        /// RENDER MAIN MENU
+        _camera.camera_Vision(&_interface, shader);
+
+
+        /// ////////////////////////////
+
+
+        _camera.move_Camera();
+
+        
 
         
         /// Render background ----
@@ -164,7 +243,7 @@ int main(void)
 
         /// Render object ----
 
-        _camera.camera_Vision(&_interface, shader);
+       
 
 
         /// Render interface ----
