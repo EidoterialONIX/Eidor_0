@@ -12,6 +12,8 @@ src/location_object.h src/location_object.cpp
 src/interface.h src/interface.cpp 
 src/load_assets.h src/load_assets.cpp 
 src/collision.h src/collision.cpp 
+src/animation.h src/animation.cpp 
+src/spell.h src/spell.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 

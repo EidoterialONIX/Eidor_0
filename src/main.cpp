@@ -12,6 +12,7 @@
 
 #include "load_assets.h"
 #include "interface.h"
+#include "animation.h"
 
 
 //#include "player.h"
@@ -202,9 +203,13 @@ int main(void)
     //Assets _assets("E:../Debug/assets/");
 
     Interface _interface(&_assets);
+    Animation _animation(&_assets);
 
     _interface.get_Texture().show_Info();
     _interface.get_Sprite().show_Info();
+
+    _animation.get_Texture().show_Info();
+    _animation.get_Sprite().show_Info();
 
     _pinterface = &_interface;
 
