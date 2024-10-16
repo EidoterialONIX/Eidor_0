@@ -181,11 +181,11 @@ Animation::Animation(Assets* assets) {
 	}
 	);
 
-	this->_animation_unit.resize(2);
+	this->_spell_animation.resize(2);
 
 
 	/// Set Animation Spell Crous
-	this->_animation_unit[0].set_Animation_Unit(
+	this->_spell_animation[0].set_Animation_Unit(
 		"Animation_Spell_Crous",
 		std::vector<std::string> {
 		"Animation_Sprite_Spell_Crous_0",
@@ -198,15 +198,15 @@ Animation::Animation(Assets* assets) {
 	);
 
 	/// Set Animation Spell Storm
-	this->_animation_unit[0].set_Animation_Unit(
-		"Animation_Spell_Crous",
+	this->_spell_animation[1].set_Animation_Unit(
+		"Animation_Spell_Storm",
 		std::vector<std::string> {
-		"Animation_Sprite_Spell_Crous_0",
-			"Animation_Sprite_Spell_Crous_1",
-			"Animation_Sprite_Spell_Crous_2",
-			"Animation_Sprite_Spell_Crous_3",
-			"Animation_Sprite_Spell_Crous_4",
-			"Animation_Sprite_Spell_Crous_5"
+		"Animation_Sprite_Spell_Storm_0",
+			"Animation_Sprite_Spell_Storm_1",
+			"Animation_Sprite_Spell_Storm_2",
+			"Animation_Sprite_Spell_Storm_3",
+			"Animation_Sprite_Spell_Storm_4",
+			"Animation_Sprite_Spell_Storm_5"
 	}
 	);
 
@@ -222,11 +222,11 @@ Sprite_Manager& Animation::get_Sprite() {
 
 }
 
-Animation_Unit Animation::get_Animation_Unit(std::string name_animation_unit) {
+Animation_Unit Animation::get_Spell_Animation(std::string name_animation_unit) {
 
-	for (int i{ 0 }; i < this->_animation_unit.size(); i++) {
-		if (this->_animation_unit[i].get_Name_Animation_Unit() == name_animation_unit) {
-			return this->_animation_unit[i];
+	for (int i{ 0 }; i < this->_spell_animation.size(); i++) {
+		if (this->_spell_animation[i].get_Name_Animation_Unit() == name_animation_unit) {
+			return this->_spell_animation[i];
 		}
 
 	}

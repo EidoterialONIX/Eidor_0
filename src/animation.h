@@ -36,7 +36,10 @@ private:
 	Texture_Manager _texture;
 	Sprite_Manager _sprite;
 
-	std::vector<Animation_Unit> _animation_unit;
+	std::vector<Animation_Unit> _spell_animation;
+	std::vector<Animation_Unit> _attack_animation;
+	std::vector<Animation_Unit> _effect_animation;
+	std::vector<Animation_Unit> _move_animation;
 
 public:
 
@@ -48,6 +51,9 @@ public:
 	Texture_Manager& get_Texture();
 	Sprite_Manager& get_Sprite();
 
-	Animation_Unit get_Animation_Unit(std::string name_animation_unit);
+	Animation_Unit get_Spell_Animation(std::string name_animation_unit);
+	Animation_Unit get_Attack_Animation(std::string name_animation_unit);
+	Animation_Unit get_Effect_Animation(std::string name_animation_unit);
+	Animation_Unit get_Move_Animation(std::string name_animation_unit);
 	
 };
