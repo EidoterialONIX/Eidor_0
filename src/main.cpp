@@ -4,6 +4,7 @@
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
 #include "EAGL/sprite.h"
+#include "EAGL/time.h"
 
 #include "collision.h"
 
@@ -215,49 +216,70 @@ int main(void)
 
     _camera.show_Info_Camera();
 
-    int frame_detector = 0;
-
-    
+    Time _time;
 
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
-        glfwSetWindowTitle(pWindow, "12");
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        _time.update();
 
 
-        /// RENDER MAIN MENU
-        _camera.camera_Vision(&_interface, shader);
+        /// Game Rendering
+        while (_time.get_Delta_Time() >= 1.0f) {
+            _time.increment_Updates();
+            _time.decrement_Delta_Time();
+
+            _time.increment_Frames();
+
+            glClear(GL_COLOR_BUFFER_BIT);
 
 
-        /// ////////////////////////////
+            /* Render here */
+            glClear(GL_COLOR_BUFFER_BIT);
 
+            _camera.camera_Vision(&_interface, shader);
 
-        _camera.move_Camera();
+            /* Swap front and back buffers */
+            glfwSwapBuffers(pWindow);
+
+            /* Poll for and process events */
+            glfwPollEvents();
+            
+
+        }
 
         
 
-        
-        /// Render background ----
+        if (glfwGetTime() - _time.get_Timer() >= 1.0f) {
+            _time.increment_Timer();
 
+            std::cout
+                << "FPS: "
+                << _time.get_Frames()
+                << " Updates: "
+                << _time.get_Updates()
+                << " Timer: "
+                << _time.get_Timer()
+                << std::endl;
 
+            /*
+            std::cout
+                << "Now time: "
+                << _time.get_Now_Time()
+                << " Last time: "
+                << _time.get_Last_Time()
+                << " Delta time: "
+                << _time.get_Delta_Time()
+                << std::endl;
+            */
+            
 
+            _time.reset_Frames();
+            _time.reset_Updates();
 
-        /// Render object ----
+        }
 
-       
-
-
-        /// Render interface ----
-        
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(pWindow);
-
-        /* Poll for and process events */
-        glfwPollEvents();
     }
 
     glfwTerminate();

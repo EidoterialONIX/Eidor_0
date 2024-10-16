@@ -14,6 +14,7 @@ src/load_assets.h src/load_assets.cpp
 src/collision.h src/collision.cpp 
 src/animation.h src/animation.cpp 
 src/spell.h src/spell.cpp 
+src/animation_controler.h src/animation_controler.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 
@@ -25,6 +26,7 @@ src/EAGL/render.h src/EAGL/render.cpp
 src/EAGL/transform.h src/EAGL/transform.cpp 
 src/EAGL/rect.h src/EAGL/rect.cpp 
 src/EAGL/sprite.h src/EAGL/sprite.cpp 
+src/EAGL/time.h src/EAGL/time.cpp
 )
 
 add_subdirectory(external/glad)
