@@ -19,11 +19,11 @@ void Transform::TRANSFORM_SCALE(Primitive& primitive) {
 }
 
 void Transform::CONVERT_CORDINAT(Primitive primitive, GLfloat* cordinat, Vector3D_f screen_size){
-	for (int i{ 0 }; i < 3; i++) {
+	/*for (int i{ 0 }; i < 3; i++) {
 		cordinat[i * 8] = (primitive.get_Point(i).x / (screen_size.x / 2.0f / 100.0f) - 100) / 100.0f;
 		cordinat[1 + i * 8] = -(primitive.get_Point(i).y / (screen_size.y / 2.0f / 100.0f) - 100) / 100.0f;
 
-	}
+	}*/
 
 }
 
