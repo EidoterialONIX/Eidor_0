@@ -3,6 +3,7 @@
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
 #include "EAGL/rect.h"
+#include "EAGL/font.h"
 
 #include <vector>
 #include <iostream>
@@ -68,6 +69,11 @@ public:
 
 	void camera_Vision(
 		Interface* _interface,
+		Shader_Program shader
+	);
+
+	void out_Text(
+		std::vector<Surface_Symvol> surface_symvol_buffer,
 		Shader_Program shader
 	);
 

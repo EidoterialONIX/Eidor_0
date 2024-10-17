@@ -4,20 +4,6 @@
 #include "cmath"
 
 
-struct Asset {
-
-	std::string _name_asset;
-
-	int count_texture;
-
-	std::vector<int> width_texture;
-	std::vector<int> higth_texture;
-
-	std::vector<std::string> _name_texture;
-
-};
-
-
 class Assets {
 private:
 

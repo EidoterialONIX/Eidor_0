@@ -26,7 +26,7 @@ void Texture_Manager::add_Texture(
     this->_texture.resize(this->_texture.size() + 1);
     this->_texture[this->_texture.size() - 1] = Texture(name_texture);
 
-    stbi_set_flip_vertically_on_load(false);
+    stbi_set_flip_vertically_on_load(true);
 
     glGenTextures(1, &this->_texture[this->_texture.size() - 1].get_ID());
     glBindTexture(GL_TEXTURE_2D, this->_texture[this->_texture.size() - 1].get_ID());
@@ -35,6 +35,7 @@ void Texture_Manager::add_Texture(
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 
     int width, height, nrChannals;
 
@@ -49,7 +50,7 @@ void Texture_Manager::add_Texture(
         }
         else if (type_image == "PNG") {
 
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
 
         }

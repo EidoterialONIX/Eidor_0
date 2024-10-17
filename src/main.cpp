@@ -5,6 +5,7 @@
 #include "EAGL/render.h"
 #include "EAGL/sprite.h"
 #include "EAGL/time.h"
+#include "EAGL/font.h"
 
 #include "collision.h"
 
@@ -189,6 +190,12 @@ int main(void)
     Render render(Vector3D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1], 0.0f));
     _camera = Camera(&render, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]), Vector2D_f(3000, 5000));
 
+    Font _font;
+
+    _font.init();
+
+    _font.load_Font_Matrix("E:../src/assets/Font/Number_FONT.png");
+
 
     Shader_Program shader = Shader_Program(
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
@@ -198,10 +205,31 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt");
 
 
-    
+    /*
+    for (int i{ 0 }; i < sr_sym.size(); i++) {
+
+        std::cout
+            << "Name symvol: "
+            << sr_sym[i].name_symvol.c_str()
+            << " Position symvol: "
+            << " ( X: "
+            << sr_sym[i].position.x
+            << " , Y: "
+            << sr_sym[i].position.y
+            << " ) "
+            << " Size symvol: "
+            << " ( X: "
+            << sr_sym[i].size.x
+            << " , Y: "
+            << sr_sym[i].size.y
+            << " ) "
+            << std::endl;
+    }
+    */
 
     Assets _assets("E:../src/assets/");
     //Assets _assets("E:../Debug/assets/");
+    //Assets _assets("E:../Release/assets/");
 
     Interface _interface(&_assets);
     Animation _animation(&_assets);
@@ -218,7 +246,7 @@ int main(void)
 
     Time _time;
 
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 0.0f, 0.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
@@ -232,13 +260,20 @@ int main(void)
 
             _time.increment_Frames();
 
-            glClear(GL_COLOR_BUFFER_BIT);
-
-
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
             _camera.camera_Vision(&_interface, shader);
+
+            _camera.out_Text(
+                _font.out_Line(
+                    "1234567890",
+                    Vector2D_f(
+                        0.0f, 0.0f
+                    )
+                ),
+                shader
+            );
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
@@ -254,6 +289,7 @@ int main(void)
         if (glfwGetTime() - _time.get_Timer() >= 1.0f) {
             _time.increment_Timer();
 
+            /*
             std::cout
                 << "FPS: "
                 << _time.get_Frames()
@@ -262,7 +298,7 @@ int main(void)
                 << " Timer: "
                 << _time.get_Timer()
                 << std::endl;
-
+            */
             /*
             std::cout
                 << "Now time: "

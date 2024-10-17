@@ -78,4 +78,3 @@ public:
 	Vector3D_f operator/(Vector3D_f v);
 
 };
-

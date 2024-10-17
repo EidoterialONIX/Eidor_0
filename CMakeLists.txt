@@ -27,6 +27,8 @@ src/EAGL/transform.h src/EAGL/transform.cpp
 src/EAGL/rect.h src/EAGL/rect.cpp 
 src/EAGL/sprite.h src/EAGL/sprite.cpp 
 src/EAGL/time.h src/EAGL/time.cpp
+src/EAGL/font.h src/EAGL/font.cpp 
+src/EAGL/color.h src/EAGL/color.cpp 
 )
 
 add_subdirectory(external/glad)

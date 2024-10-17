@@ -234,6 +234,56 @@ void Camera::camera_Vision(
 	};
 }
 
+void Camera::out_Text(
+	std::vector<Surface_Symvol> surface_symvol_buffer,
+	Shader_Program shader
+) {
+	Rect surface;
+
+	for (int i{ 0 }; i < surface_symvol_buffer.size(); i++) {
+
+		surface.set_Position(
+			Vector3D_f(
+				surface_symvol_buffer[i].position.x,
+				surface_symvol_buffer[i].position.y,
+				0.0f
+			)
+		);
+		surface.set_Size(
+			Vector3D_f(
+				surface_symvol_buffer[i].size.x,
+				surface_symvol_buffer[i].size.y,
+				0.0f
+			)
+		);
+		surface.set_Color(
+			surface_symvol_buffer[i].sprite_manager->get_Sprite(
+				surface_symvol_buffer[i].name_symvol).get_Color_Filter()
+		);
+		surface.set_Texture_Points(
+			surface_symvol_buffer[i].sprite_manager->get_Sprite(
+				surface_symvol_buffer[i].name_symvol).get_Texture_Points()[0],
+			surface_symvol_buffer[i].sprite_manager->get_Sprite(
+				surface_symvol_buffer[i].name_symvol).get_Texture_Points()[1],
+			surface_symvol_buffer[i].sprite_manager->get_Sprite(
+				surface_symvol_buffer[i].name_symvol).get_Texture_Points()[2],
+			surface_symvol_buffer[i].sprite_manager->get_Sprite(
+				surface_symvol_buffer[i].name_symvol).get_Texture_Points()[3]
+		);
+
+		this->_render->Draw(
+			surface,
+			shader,
+			surface_symvol_buffer[i].sprite_manager->get_Texture_Manager()->get_Texture(
+				surface_symvol_buffer[i].sprite_manager->get_Sprite(
+					surface_symvol_buffer[i].name_symvol).get_Name_Link_Texture()
+			)
+		);
+
+	};
+
+}
+
 void Camera::show_Info_Camera() const {
 	using namespace std;
 
