@@ -19,7 +19,6 @@ src/animation_controler.h src/animation_controler.cpp
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 
 src/EAGL/vectors.h src/EAGL/vectors.cpp 
-src/EAGL/primitive.h src/EAGL/primitive.cpp 
 src/EAGL/shader.h src/EAGL/shader.cpp 
 src/EAGL/texture.h src/EAGL/texture.cpp 
 src/EAGL/render.h src/EAGL/render.cpp 
@@ -29,6 +28,7 @@ src/EAGL/sprite.h src/EAGL/sprite.cpp
 src/EAGL/time.h src/EAGL/time.cpp
 src/EAGL/font.h src/EAGL/font.cpp 
 src/EAGL/color.h src/EAGL/color.cpp 
+src/EAGL/surface.h src/EAGL/surface.cpp 
 )
 
 add_subdirectory(external/glad)

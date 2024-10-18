@@ -21,6 +21,12 @@ public:
 		bool status_collision
 	);
 
+	void set_Collider(
+		Vector2D_f position,
+		Vector2D_f size,
+		bool status_collision
+	);
+
 	void set_Position(Vector2D_f position);
 	Vector2D_f get_Position() const;
 
@@ -29,5 +35,6 @@ public:
 
 	void set_Status_Collision(bool status_cpllision);
 	bool get_Status_Collision() const;
+
 };
 

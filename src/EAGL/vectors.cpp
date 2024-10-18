@@ -122,6 +122,11 @@ Vector3D_f::Vector3D_f(float x, float y, float z) {
 
 }
 
+Vector3D_f::Vector3D_f(Vector2D_f v, float z) {
+	this->x = v.x; this->y = v.y; this->z = z;
+
+}
+
 void Vector3D_f::operator=(Vector3D_f v) {
 	this->x = v.x; this->y = v.y; this->z = v.z;
 

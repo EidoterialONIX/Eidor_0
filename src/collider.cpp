@@ -5,6 +5,19 @@ Collider::Collider(
 	Vector2D_f size,
 	bool status_collision
 ) {
+	this->set_Collider(
+		position,
+		size,
+		status_collision
+	);
+
+}
+
+void Collider::set_Collider(
+	Vector2D_f position,
+	Vector2D_f size,
+	bool status_collision
+) {
 	this->set_Position(position);
 	this->set_Size(size);
 	this->set_Status_Collision(status_collision);

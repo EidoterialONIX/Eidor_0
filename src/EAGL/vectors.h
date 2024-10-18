@@ -64,6 +64,8 @@ public:
 
 	Vector3D_f(float x, float y, float z);
 
+	Vector3D_f(Vector2D_f v, float z);
+
 	void operator=(Vector3D_f v);
 	bool operator==(Vector3D_f v);
 

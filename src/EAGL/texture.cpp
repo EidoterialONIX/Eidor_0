@@ -15,6 +15,7 @@ GLuint& Texture::get_ID() {
 
 std::string Texture::get_Name_Texture() const {
     return _name_texture;
+
 }
 
 void Texture_Manager::add_Texture(
@@ -22,7 +23,6 @@ void Texture_Manager::add_Texture(
     std::string name_texture,
     std::string type_image
 ) {
-
     this->_texture.resize(this->_texture.size() + 1);
     this->_texture[this->_texture.size() - 1] = Texture(name_texture);
 

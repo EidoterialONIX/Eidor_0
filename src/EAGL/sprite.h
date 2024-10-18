@@ -1,13 +1,9 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-#include "rect.h"
 #include "texture.h"
-
-
-
+#include "color.h"
 
 class Sprite {
 private:
@@ -15,7 +11,7 @@ private:
 	std::string _name_sprite;
 	std::string _name_link_texture;
 
-	Vector3D_f _color_filter;
+	Color _color_filter;
 
 	Vector2D_f _texture_point_0;
 	Vector2D_f _texture_point_1;
@@ -52,7 +48,7 @@ public:
 		Vector2D_f _texture_point_2,
 		Vector2D_f _texture_point_3
 	);
-	std::vector<Vector2D_f> get_Texture_Points() const;
+	Vector2D_f* pull_Texture_Points() const;
 
 };
 
