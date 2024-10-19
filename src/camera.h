@@ -5,6 +5,7 @@
 #include "EAGL/rect.h"
 #include "EAGL/texture.h"
 #include "EAGL/time.h"
+#include "EAGL/text.h"
 
 #include <vector>
 #include <iostream>
@@ -60,6 +61,11 @@ public:
 		Shader_Program& shader,
 		Texture& texture,
 		Sprite& sprite
+	);
+
+	void render_Text(
+		Text&,
+		Shader_Program& shader
 	);
 
 	void show_Info_Camera() const;

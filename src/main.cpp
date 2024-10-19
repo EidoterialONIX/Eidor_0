@@ -106,6 +106,20 @@ int main(void)
 
     Texture _texture1, _texture2;
 
+    Font _font;
+    _font.load_Font(
+        "E:/C++ projects/Eidor_0/src/assets/Font/Number_FONT.png",
+        Vector2D_f(160, 16),
+        Vector2D_f(16, 16)
+    );
+
+    Text text(&_font);
+
+    text.set_Text("54335433");
+    text.set_Color(Color(255, 255, 255, 255));
+    text.set_Start_Position(Vector2D_f(100, 30));
+    text.set_Text_Size(16.0f);
+
     _texture1.load_Texture(
         "E:/C++ projects/Eidor_0/src/assets/Background/main_background_menu.jpg",
         3
@@ -177,6 +191,8 @@ int main(void)
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
+            text.set_Text(std::to_string(_time.get_Frames()));
+
             rect2.set_Position(rect2.get_Position() + Vector2D_f(0.2, 0.2));
 
             _camera.render_Sprite(
@@ -184,6 +200,11 @@ int main(void)
                 shader,
                 _texture2,
                 spell_crous
+            );
+
+            _camera.render_Text(
+                text,
+                shader
             );
 
             /* Swap front and back buffers */

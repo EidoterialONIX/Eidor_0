@@ -20,6 +20,8 @@ src/EAGL/sprite.h src/EAGL/sprite.cpp
 src/EAGL/time.h src/EAGL/time.cpp
 src/EAGL/color.h src/EAGL/color.cpp 
 src/EAGL/surface.h src/EAGL/surface.cpp 
+src/EAGL/font.h src/EAGL/font.cpp 
+src/EAGL/text.h src/EAGL/text.cpp 
 )
 
 add_subdirectory(external/glad)

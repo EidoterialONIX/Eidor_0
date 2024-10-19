@@ -135,8 +135,46 @@ void Camera::render_Sprite(
 	this->_render->DrawSprite(
 		rect,
 		shader,
-		texture
+		texture.get_ID()
 	);
+
+}
+
+void Camera::render_Text(
+	Text& text,
+	Shader_Program& shader
+) {
+
+	Rect surface;
+
+	Vector2D_f texture_points[4];
+
+
+	for (int i{ 0 }; i < text.get_Text().size(); i++) {
+
+		surface.set_Position(Vector2D_f(
+			text.get_Start_Position().x + (text.get_Font()->get_Space_Symvol().x * i),
+			text.get_Start_Position().y
+		));
+		surface.set_Size(Vector2D_f(
+			text.get_Text_Size(), text.get_Text_Size()
+		));
+		surface.set_Color(text.get_Color());
+
+		texture_points[0] = text.pull_Symvol_Unit(text.get_Text().c_str()[i]).texture_point_0;
+		texture_points[1] = text.pull_Symvol_Unit(text.get_Text().c_str()[i]).texture_point_1;
+		texture_points[2] = text.pull_Symvol_Unit(text.get_Text().c_str()[i]).texture_point_2;
+		texture_points[3] = text.pull_Symvol_Unit(text.get_Text().c_str()[i]).texture_point_3;
+
+		surface.set_Texture_Points(texture_points);
+
+		this->_render->DrawSprite(
+			surface,
+			shader,
+			text.get_Font()->get_Symvol_Map_Texture()
+		);
+
+	}
 
 }
 

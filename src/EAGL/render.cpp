@@ -22,7 +22,7 @@ void Render::CORDINAT_CONVERTER(
 void Render::DrawSprite(
 	Rect RECT,
 	Shader_Program shader_program,
-	Texture& texture
+	GLuint& texture_id
 ) {
 	GLfloat construct[27]{};
 
@@ -103,7 +103,7 @@ void Render::DrawSprite(
 		glBindVertexArray(0);
 		
 		shader_program.USE();
-		glBindTexture(GL_TEXTURE_2D, texture.get_ID());
+		glBindTexture(GL_TEXTURE_2D, texture_id);
 		glBindVertexArray(this->VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 

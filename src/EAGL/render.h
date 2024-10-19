@@ -30,7 +30,7 @@ public:
     void DrawSprite(
         Rect RECT,
         Shader_Program shader,
-        Texture& texture
+        GLuint& texture_id
     );
 
 };
