@@ -7,12 +7,12 @@
 class Rectangle_Surface {
 private:
 
-	Vector2D_f _positional_point_0{ 0.0f, 0.0f };
-	Vector2D_f _positional_point_1{ 0.0f, 0.0f };
-	Vector2D_f _positional_point_2{ 0.0f, 0.0f };
-	Vector2D_f _positional_point_3{ 0.0f, 0.0f };
+	Vector2D_f _positional_point_0;
+	Vector2D_f _positional_point_1;
+	Vector2D_f _positional_point_2;
+	Vector2D_f _positional_point_3;
 
-	Vector2D_f _surface_center{ 0.0f, 0.0f };
+	Vector2D_f _surface_center;
 
 	void _UPDATE_CENTER();
 	

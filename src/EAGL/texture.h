@@ -1,53 +1,24 @@
 #pragma once
 
 #include "glad/glad.h"
-#include "GLFW/glfw3.h"
 
 #include "stb_image.h"
-#include "vector"
-#include "string.h"
 #include <iostream>
-
-
-
 
 class Texture {
 private:
 
-    GLuint _ID = 0;
-    std::string _name_texture;
+    GLuint _ID = NULL;
 
 public:
 
     Texture() = default;
 
-    Texture(std::string name_texture);
-
-    GLuint& get_ID();
-
-    std::string get_Name_Texture() const;
-
-};
-
-
-
-class Texture_Manager {
-private:
-
-    std::vector<Texture> _texture;
-
-public:
-
-    Texture_Manager() = default;
-
-    void add_Texture(
-        std::string path_texture,
-        std::string name_texture,
-        std::string type_image
+    void load_Texture(
+        const char* path_texture,
+        GLuint b_c
     );
 
-    Texture get_Texture(std::string name_texture) const;
-    
-    void show_Info();
+    GLuint& get_ID();
 
 };

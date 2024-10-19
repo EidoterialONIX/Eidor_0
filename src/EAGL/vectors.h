@@ -1,8 +1,6 @@
 #pragma once
 
 
-
-
 class Vector2D_f {
 public:
 

@@ -1,7 +1,5 @@
 #include "shader.h"
 
-
-
 Shader_Program::Shader_Program(const char* vertex_path, const char* fragment_path) {
 
     std::string vertex_shader_code;
@@ -50,11 +48,11 @@ Shader_Program::Shader_Program(const char* vertex_path, const char* fragment_pat
     glCompileShader(fragment_sh);
     Check_Correct_Compile(fragment_sh, "Fragment\n");
 
-    _shader_program = glCreateProgram();
+    this->_ID = glCreateProgram();
 
-    glAttachShader(_shader_program, vertex_sh);
-    glAttachShader(_shader_program, fragment_sh);
-    glLinkProgram(_shader_program);
+    glAttachShader(this->_ID, vertex_sh);
+    glAttachShader(this->_ID, fragment_sh);
+    glLinkProgram(this->_ID);
     Check_Correct_Link();
 
     glDeleteShader(vertex_sh);
@@ -65,7 +63,7 @@ Shader_Program::Shader_Program(const char* vertex_path, const char* fragment_pat
 
 void Shader_Program::USE() {
 
-    glUseProgram(_shader_program);
+    glUseProgram(this->_ID);
 
 }
 
@@ -89,10 +87,10 @@ void Shader_Program::Check_Correct_Link() {
     int success = 0;
     char log[512];
 
-    glGetProgramiv(_shader_program, GL_LINK_STATUS, &success);
+    glGetProgramiv(this->_ID, GL_LINK_STATUS, &success);
 
     if (!success) {
-        glGetProgramInfoLog(_shader_program, 512, NULL, log);
+        glGetProgramInfoLog(this->_ID, 512, NULL, log);
         std::cout << "Linker\n" << log << std::endl;
 
     }
@@ -100,11 +98,7 @@ void Shader_Program::Check_Correct_Link() {
 }
 
 
-GLuint Shader_Program::get_Shader_Porogram() {
-    return this->_shader_program;
+GLuint& Shader_Program::get_ID() {
+    return this->_ID;
 
 }
-
-
-
-

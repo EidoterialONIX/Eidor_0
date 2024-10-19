@@ -2,83 +2,60 @@
 
 #include <glad/glad.h>
 
+#include "vectors.h"
 #include "texture.h"
 #include "color.h"
 
 class Sprite {
 private:
 	
-	std::string _name_sprite;
-	std::string _name_link_texture;
+	Texture* _texture = nullptr; 
 
 	Color _color_filter;
 
-	Vector2D_f _texture_point_0;
-	Vector2D_f _texture_point_1;
-	Vector2D_f _texture_point_2;
-	Vector2D_f _texture_point_3;
+	GLuint _count_frame = 1; GLuint _current_frame = 0;
 
+	GLuint _space_pixel_x; GLuint _space_pixel_y;
 
+	Vector2D_f _texture_point_0; Vector2D_f _texture_point_1;
+	Vector2D_f _texture_point_2; Vector2D_f _texture_point_3;
+
+	void _UPDATE_FRAME();
+	
 public:
 
 	Sprite() = default;
 
 	Sprite(
-		std::string name_sprite,
-		std::string name_link_texture
+		Color color_filter,
+		Vector2D_f _texture_point_0, Vector2D_f _texture_point_1,
+		Vector2D_f _texture_point_2, Vector2D_f _texture_point_3
 	);
-
-	std::string get_Name_Sprite() const;
-	std::string get_Name_Link_Texture() const;
 
 	void set_Sprite(
-		Vector3D_f color_filter,
-		Vector2D_f _texture_point_0,
-		Vector2D_f _texture_point_1,
-		Vector2D_f _texture_point_2,
-		Vector2D_f _texture_point_3
+		Color color_filter,
+		Vector2D_f _texture_point_0, Vector2D_f _texture_point_1,
+		Vector2D_f _texture_point_2, Vector2D_f _texture_point_3
 	);
 
-	void set_Color_Filter(Vector3D_f color_filter);
-	Vector3D_f get_Color_Filter() const;
+	void bind_Texture(Texture* texture);
+
+	void init_Animation_Unit(
+		GLuint count_frame,
+		GLuint _space_pixel_x, GLuint _space_pixel_y
+	);
+
+	void set_Color_Filter(Color color_filter);
+	Color get_Color_Filter() const;
 
 	void set_Texture_Points(
-		Vector2D_f _texture_point_0,
-		Vector2D_f _texture_point_1,
-		Vector2D_f _texture_point_2,
-		Vector2D_f _texture_point_3
+		Vector2D_f _texture_point_0, Vector2D_f _texture_point_1,
+		Vector2D_f _texture_point_2, Vector2D_f _texture_point_3
 	);
 	Vector2D_f* pull_Texture_Points() const;
 
-};
+	GLuint get_Current_Frame();
 
-class Sprite_Manager {
-private:
-
-	Texture_Manager* _texture_manager  = nullptr;
-
-	std::vector<Sprite> _sprite;
-
-public:
-
-	Sprite_Manager() = default;
-
-	Sprite_Manager(Texture_Manager* texture_manager);
-
-	void add_Sptite(
-		std::string name_sprite,
-		std::string name_link_texture,
-		Vector3D_f color_filter,
-		Vector2D_f texture_point_0,
-		Vector2D_f texture_point_1,
-		Vector2D_f texture_point_2,
-		Vector2D_f texture_point_3
-	);
-
-	Texture_Manager* get_Texture_Manager();
-
-	Sprite get_Sprite(std::string name_sprite);
-
-	void show_Info();
+	GLuint& get_Texture();
 
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include <string>
 #include <fstream>
@@ -14,7 +13,7 @@
 class Shader_Program {
 private:
 
-    GLuint _shader_program = 0;
+    GLuint _ID = NULL;
 
     void Check_Correct_Compile(GLuint id, const char* type);
 
@@ -27,7 +26,7 @@ public:
 
     void USE();
 
-    GLuint get_Shader_Porogram();
+    GLuint& get_ID();
 
 };
 

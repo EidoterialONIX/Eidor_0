@@ -37,8 +37,8 @@ Vector2D_f Rectangle_Surface::get_Center() const {
 
 Vector2D_f* Rectangle_Surface::pull_Positional_Points() const {
 	Vector2D_f positional_points[4]{
-		Vector2D_f(0.0f, 0.0f), Vector2D_f(0.0f, 0.0f),
-		Vector2D_f(0.0f, 0.0f), Vector2D_f(0.0f, 0.0f)
+		Vector2D_f(), Vector2D_f(),
+		Vector2D_f(), Vector2D_f()
 	};
 
 	positional_points[0] = this->_positional_point_0;
