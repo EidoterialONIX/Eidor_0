@@ -15,7 +15,7 @@ private:
 
 	GLuint _count_frame = 1; GLuint _current_frame = 0;
 
-	GLuint _space_pixel_x; GLuint _space_pixel_y;
+	GLfloat _space_pixel_x; GLfloat _space_pixel_y;
 
 	Vector2D_f _texture_point_0; Vector2D_f _texture_point_1;
 	Vector2D_f _texture_point_2; Vector2D_f _texture_point_3;
@@ -42,7 +42,7 @@ public:
 
 	void init_Animation_Unit(
 		GLuint count_frame,
-		GLuint _space_pixel_x, GLuint _space_pixel_y
+		GLfloat _space_pixel_x, GLfloat _space_pixel_y
 	);
 
 	void set_Color_Filter(Color color_filter);
@@ -52,10 +52,12 @@ public:
 		Vector2D_f _texture_point_0, Vector2D_f _texture_point_1,
 		Vector2D_f _texture_point_2, Vector2D_f _texture_point_3
 	);
-	Vector2D_f* pull_Texture_Points() const;
+	Vector2D_f pull_Texture_Point(GLuint index) const;
 
 	GLuint get_Current_Frame();
 
 	GLuint& get_Texture();
+
+	void update_Animation();
 
 };

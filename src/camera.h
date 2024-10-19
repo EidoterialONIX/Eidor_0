@@ -4,6 +4,7 @@
 #include "EAGL/render.h"
 #include "EAGL/rect.h"
 #include "EAGL/texture.h"
+#include "EAGL/time.h"
 
 #include <vector>
 #include <iostream>
@@ -12,6 +13,7 @@ class Camera {
 private:
 
 	Render* _render;
+	Time* _time;
 
 	Vector2D_f _size_screen;
 	Vector2D_f _max_size_map;
@@ -37,6 +39,7 @@ public:
 
 	Camera(
 		Render* render,
+		Time* time,
 		Vector2D_f size_screen,
 		Vector2D_f max_size_map
 		);
@@ -55,7 +58,8 @@ public:
 	void render_Sprite(
 		Rect& rect,
 		Shader_Program& shader,
-		Texture& texture
+		Texture& texture,
+		Sprite& sprite
 	);
 
 	void show_Info_Camera() const;

@@ -40,7 +40,7 @@ void Sprite::bind_Texture(Texture* texture) {
 
 void Sprite::init_Animation_Unit(
 	GLuint count_frame,
-	GLuint _space_pixel_x, GLuint _space_pixel_y
+	GLfloat _space_pixel_x, GLfloat _space_pixel_y
 ) {
 	this->_count_frame = count_frame;
 
@@ -69,28 +69,44 @@ void Sprite::set_Texture_Points(
 
 }
 
-Vector2D_f* Sprite::pull_Texture_Points() const {
-	Vector2D_f texture_points[4];
-
-	texture_points[0] = this->_texture_point_0;
-	texture_points[1] = this->_texture_point_1;
-	texture_points[2] = this->_texture_point_2;
-	texture_points[3] = this->_texture_point_3;
-
-	return texture_points;
+Vector2D_f Sprite::pull_Texture_Point(GLuint index) const {
+	if (index == 0) return this->_texture_point_0;
+	else if (index == 1) return this->_texture_point_1;
+	else if (index == 2) return this->_texture_point_2;
+	else if (index == 3) return this->_texture_point_3;
 
 }
 
 GLuint Sprite::get_Current_Frame() {
-	GLuint frame = this->_current_frame;
-
-	this->_UPDATE_FRAME();
-
-	return frame;
+	return this->_current_frame;
 	
 }
 
 GLuint& Sprite::get_Texture() {
 	return this->_texture->get_ID();
+
+}
+
+void Sprite::update_Animation() {
+	this->set_Texture_Points(
+		Vector2D_f(
+			(0 + (this->_space_pixel_x * this->_current_frame)) / (this->_space_pixel_x * this->_count_frame),
+			1
+		),
+		Vector2D_f(
+			(this->_space_pixel_x + (this->_space_pixel_x * this->_current_frame)) / (this->_space_pixel_x * this->_count_frame),
+			1
+		),
+		Vector2D_f(
+			(this->_space_pixel_x + (this->_space_pixel_x * this->_current_frame)) / (this->_space_pixel_x * this->_count_frame),
+			0
+		),
+		Vector2D_f(
+			(0 + (this->_space_pixel_x * this->_current_frame)) / (this->_space_pixel_x * this->_count_frame),
+			0
+		)
+	);
+
+	this->_UPDATE_FRAME();
 
 }

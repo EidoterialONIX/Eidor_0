@@ -5,10 +5,12 @@
 
 Camera::Camera(
 	Render* render,
+	Time* time,
 	Vector2D_f size_screen,
 	Vector2D_f max_size_map
 ) {
 	this->_render = render;
+	this->_time = time;
 
 	this->_position_camera = Vector2D_f(0.0f, 0.0f);
 
@@ -110,8 +112,25 @@ void Camera::reset_velosity() {
 void Camera::render_Sprite(
 	Rect& rect,
 	Shader_Program& shader,
-	Texture& texture
+	Texture& texture,
+	Sprite& sprite
 ) {
+
+	rect.set_Color(sprite.get_Color_Filter());
+
+	if (this->_time->get_Frames() % 10 == 0) {
+		sprite.update_Animation();
+	}
+	
+
+	Vector2D_f texture_points[4];
+
+	texture_points[0] = sprite.pull_Texture_Point(0);
+	texture_points[1] = sprite.pull_Texture_Point(1);
+	texture_points[2] = sprite.pull_Texture_Point(2);
+	texture_points[3] = sprite.pull_Texture_Point(3);
+
+	rect.set_Texture_Points(texture_points);
 
 	this->_render->DrawSprite(
 		rect,

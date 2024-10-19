@@ -102,6 +102,8 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt"
     );
 
+
+
     Texture _texture1, _texture2;
 
     _texture1.load_Texture(
@@ -109,14 +111,30 @@ int main(void)
         3
     );
     _texture2.load_Texture(
-        "E:/C++ projects/Eidor_0/src/assets/spell/spell_Crous.png",
+        "E:/C++ projects/Eidor_0/src/assets/spell/animation/spell_Crous.png",
         4
     );
 
+    Sprite spell_crous;
+
+    spell_crous.set_Sprite(
+        Color(255, 255, 255, 255),
+        Vector2D_f(), Vector2D_f(),
+        Vector2D_f(), Vector2D_f()
+    );
+    spell_crous.bind_Texture(&_texture2);
+    spell_crous.init_Animation_Unit(
+        6,
+        32,
+        32
+    );
+
     Render _render(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
+    Time _time;
 
     Camera _camera(
         &_render,
+        &_time,
         Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
         Vector2D_f(3000.0f, 5000.0f)
     );
@@ -131,7 +149,7 @@ int main(void)
     };
 
     rect1.set_Position(Vector2D_f(0.0f, 0.0f));
-    rect1.set_Size(Vector2D_f(200, 200));
+    rect1.set_Size(Vector2D_f(32, 32));
     rect1.set_Color(Color(255, 0, 0, 255));
     rect1.set_Texture_Points(_texture_points);
 
@@ -140,12 +158,10 @@ int main(void)
     rect2.set_Color(Color(255, 255, 255, 255));
     rect2.set_Texture_Points(_texture_points);
 
-    Time _time;
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
@@ -161,13 +177,13 @@ int main(void)
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
-            rect2.set_Position(rect2.get_Position() + Vector2D_f(1.0f, 1.0f));
-            rect2.set_Scale(rect2.get_Scale() + 0.01f);
+            rect2.set_Position(rect2.get_Position() + Vector2D_f(0.2, 0.2));
 
             _camera.render_Sprite(
                 rect2,
                 shader,
-                _texture2
+                _texture2,
+                spell_crous
             );
 
             /* Swap front and back buffers */
