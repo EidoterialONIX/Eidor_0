@@ -3,20 +3,15 @@
 
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
+#include "EAGL/rect.h"
+#include "EAGL/texture.h"
 #include "EAGL/sprite.h"
 #include "EAGL/time.h"
-#include "EAGL/font.h"
 #include "EAGL/color.h"
 
 #include "collision.h"
 
 #include "camera.h"
-#include "location_object.h"
-
-#include "load_assets.h"
-#include "interface.h"
-#include "animation.h"
-
 
 //#include "player.h"
 
@@ -101,28 +96,60 @@ int main(void)
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
-    Color a(
-        255, 255,
-        255, 255
+
+    Shader_Program shader(
+        "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
+        "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt"
     );
 
-    Color b(
-       5, 3,
-        17, 10
+    Texture _texture1, _texture2;
+
+    _texture1.load_Texture(
+        "E:/C++ projects/Eidor_0/src/assets/Background/main_background_menu.jpg",
+        3
+    );
+    _texture2.load_Texture(
+        "E:/C++ projects/Eidor_0/src/assets/spell/spell_Crous.png",
+        4
     );
 
-    a = a / b;
+    Render _render(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
 
-    a.out_Information();
+    Camera _camera(
+        &_render,
+        Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
+        Vector2D_f(3000.0f, 5000.0f)
+    );
+
+    Rect rect1, rect2;
+
+    Vector2D_f _texture_points[4] = {
+        Vector2D_f(0.0f, 1.0f),
+        Vector2D_f(1.0f, 1.0f),
+        Vector2D_f(1.0f, 0.0f),
+        Vector2D_f(0.0f, 0.0f),
+    };
+
+    rect1.set_Position(Vector2D_f(0.0f, 0.0f));
+    rect1.set_Size(Vector2D_f(200, 200));
+    rect1.set_Color(Color(255, 0, 0, 255));
+    rect1.set_Texture_Points(_texture_points);
+
+    rect2.set_Position(Vector2D_f(100.0f, 100.0f));
+    rect2.set_Size(Vector2D_f(32, 32));
+    rect2.set_Color(Color(255, 255, 255, 255));
+    rect2.set_Texture_Points(_texture_points);
 
     Time _time;
 
-    glClearColor(1.0f, 1.0f, 0.0f, 0.0f);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(pWindow))
     {
         _time.update();
-
 
         /// Game Rendering
         while (_time.get_Delta_Time() >= 1.0f) {
@@ -134,7 +161,14 @@ int main(void)
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
 
-               
+            rect2.set_Position(rect2.get_Position() + Vector2D_f(1.0f, 1.0f));
+            rect2.set_Scale(rect2.get_Scale() + 0.01f);
+
+            _camera.render_Sprite(
+                rect2,
+                shader,
+                _texture2
+            );
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);

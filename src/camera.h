@@ -3,14 +3,10 @@
 #include "EAGL/vectors.h"
 #include "EAGL/render.h"
 #include "EAGL/rect.h"
-#include "EAGL/font.h"
+#include "EAGL/texture.h"
 
 #include <vector>
 #include <iostream>
-#include "location_object.h"
-#include "interface.h"
-
-
 
 class Camera {
 private:
@@ -56,25 +52,10 @@ public:
 	void change_Velosity(int side);
 	void reset_velosity();
 
-	void camera_Vision(
-		Rect surface,
-		Shader_Program shader,
-		Texture background
-	);
-
-	void camera_Vision(
-		Location_Object_Manager* location_object_manager,
-		Shader_Program shader
-	);
-
-	void camera_Vision(
-		Interface* _interface,
-		Shader_Program shader
-	);
-
-	void out_Text(
-		std::vector<Surface_Symvol> surface_symvol_buffer,
-		Shader_Program shader
+	void render_Sprite(
+		Rect& rect,
+		Shader_Program& shader,
+		Texture& texture
 	);
 
 	void show_Info_Camera() const;

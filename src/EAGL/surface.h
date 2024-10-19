@@ -1,5 +1,7 @@
 #pragma once
 
+#include "glad/glad.h"
+
 #include "vectors.h"
 
 #include <iostream>
@@ -29,10 +31,8 @@ public:
 		Vector2D_f position,
 		Vector2D_f size
 	);
-
 	Vector2D_f get_Center() const;
-
-	Vector2D_f* pull_Positional_Points() const;
+	Vector2D_f pull_Positional_Point(GLuint index) const;
 
 	void out_Information() const;
 

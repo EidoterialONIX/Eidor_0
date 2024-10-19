@@ -5,16 +5,8 @@ project(Eidor_0)
 
 add_executable(Eidor_0 src/main.cpp 
 src/camera.h src/camera.cpp 
-src/collider.h src/collider.cpp 
-src/player.h src/player.cpp 
-src/characteristic.h src/characteristic.cpp 
-src/location_object.h src/location_object.cpp 
-src/interface.h src/interface.cpp 
-src/load_assets.h src/load_assets.cpp 
+src/collider.h src/collider.cpp  
 src/collision.h src/collision.cpp 
-src/animation.h src/animation.cpp 
-src/spell.h src/spell.cpp 
-src/animation_controler.h src/animation_controler.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 
@@ -26,7 +18,6 @@ src/EAGL/transform.h src/EAGL/transform.cpp
 src/EAGL/rect.h src/EAGL/rect.cpp 
 src/EAGL/sprite.h src/EAGL/sprite.cpp 
 src/EAGL/time.h src/EAGL/time.cpp
-src/EAGL/font.h src/EAGL/font.cpp 
 src/EAGL/color.h src/EAGL/color.cpp 
 src/EAGL/surface.h src/EAGL/surface.cpp 
 )

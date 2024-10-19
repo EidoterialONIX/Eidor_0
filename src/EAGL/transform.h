@@ -1,32 +1,23 @@
 #pragma once
+#include <glad/glad.h>
 
 #include "vectors.h"
-#include "primitive.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-
-
+#include "rect.h"
 
 class Transform {
-private:
-
-    Vector3D_f _scale = Vector3D_f(1.0f, 1.0f, 1.0f);
-
-    int _rotate = 0;
-
 public:
 
     Transform() = default;
 
-    void set_Scale(Vector3D_f scale);
+    void TRANSFORM_SCALE(
+        Vector2D_f* positional_points,
+        GLfloat scale
+    );
 
-    void change_Rotate(int rotate);
-    void TRANSFORM_SCALE(Primitive& primitive);
-
-    void CONVERT_CORDINAT(Primitive primitive, GLfloat* cordinat, Vector3D_f screen_size);
-
+    void TRANSFORM_ROTATE(
+        Vector2D_f* positional_points,
+        GLuint rotate,
+        Vector2D_f origin
+    );
+    
 };
-
-
-

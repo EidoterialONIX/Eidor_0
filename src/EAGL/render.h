@@ -1,32 +1,37 @@
 #pragma once
 
-#include "vectors.h"
-#include "primitive.h"
-#include "shader.h"
-#include "texture.h"
-#include "rect.h"
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
-
+#include "vectors.h"
+#include "shader.h"
+#include "transform.h"
+#include "texture.h"
+#include "sprite.h"
+#include "rect.h"
 
 class Render {
 
-    Vector3D_f _screen_size = Vector3D_f(0.0f, 0.0f, 0.0f);
+    Vector2D_f _screen_size;
+
+    Transform _transform;
 
     GLuint VBO = 0;
     GLuint VAO = 0;
 
-    Primitive _primitive;
-
-    GLfloat _cordinat[24];
-
+    void CORDINAT_CONVERTER(
+        Vector2D_f* positional_points,
+        GLuint count_points
+    );
 
 public:
 
-    Render(Vector3D_f screen_size);
+    Render(Vector2D_f screen_size);
 
-    void Draw(Rect RECT, Shader_Program shader_program, Texture& texture);
+    void DrawSprite(
+        Rect RECT,
+        Shader_Program shader,
+        Texture& texture
+    );
 
 };
 

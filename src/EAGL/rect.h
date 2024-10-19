@@ -49,6 +49,10 @@ public:
 	void set_Texture_Points(Vector2D_f* texture_points);
 	Vector2D_f* pull_Texture_Points() const;
 
+	Vector2D_f pull_Surface_Positional_Point(GLuint index) const;
+
+	Vector2D_f get_Center() const;
+
 	void out_Information();
 
 };

@@ -86,6 +86,19 @@ Vector2D_f* Rect::pull_Texture_Points() const {
 
 }
 
+Vector2D_f Rect::pull_Surface_Positional_Point(GLuint index) const {
+	if (index == 0) return this->pull_Positional_Point(index);
+	else if (index == 1) return this->pull_Positional_Point(index);
+	else if (index == 2) return this->pull_Positional_Point(index);
+	else if (index == 3) return this->pull_Positional_Point(index);
+
+}
+
+Vector2D_f Rect::get_Center() const {
+	return this->get_Center();
+
+}
+
 void Rect::out_Information() {
 	using namespace std;
 

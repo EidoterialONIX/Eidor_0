@@ -35,18 +35,11 @@ Vector2D_f Rectangle_Surface::get_Center() const {
 
 }
 
-Vector2D_f* Rectangle_Surface::pull_Positional_Points() const {
-	Vector2D_f positional_points[4]{
-		Vector2D_f(), Vector2D_f(),
-		Vector2D_f(), Vector2D_f()
-	};
-
-	positional_points[0] = this->_positional_point_0;
-	positional_points[1] = this->_positional_point_1;
-	positional_points[2] = this->_positional_point_2;
-	positional_points[3] = this->_positional_point_3;
-	
-	return positional_points;
+Vector2D_f Rectangle_Surface::pull_Positional_Point(GLuint index) const {
+	if (index == 0) return this->_positional_point_0;
+	else if (index == 1) return this->_positional_point_1;
+	else if (index == 2) return this->_positional_point_2;
+	else if (index == 3) return this->_positional_point_3;
 
 }
 
