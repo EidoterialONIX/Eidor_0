@@ -76,13 +76,8 @@ void Rect::set_Texture_Points(Vector2D_f* texture_points) {
 
 }
 
-Vector2D_f* Rect::pull_Texture_Points() const {
-	Vector2D_f texture_points[4];
-
-	texture_points[0] = this->_texture_points[0]; texture_points[1] = this->_texture_points[1];
-	texture_points[2] = this->_texture_points[2]; texture_points[3] = this->_texture_points[3];
-
-	return texture_points;
+Vector2D_f Rect::pull_Texture_Point(GLuint index) const {
+	return this->_texture_points[index];
 
 }
 
@@ -101,8 +96,6 @@ Vector2D_f Rect::get_Center() const {
 
 void Rect::out_Information() {
 	using namespace std;
-
-	this->out_Information();
 
 	cout
 		<< "Position: "

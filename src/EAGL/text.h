@@ -8,10 +8,8 @@
 
 struct Symvol_Unit {
 
-	Vector2D_f texture_point_0;
-	Vector2D_f texture_point_1;
-	Vector2D_f texture_point_2;
-	Vector2D_f texture_point_3;
+	Vector2D_f texture_point_0;	Vector2D_f texture_point_1;
+	Vector2D_f texture_point_2;	Vector2D_f texture_point_3;
 
 };
 
@@ -44,7 +42,7 @@ public:
 	GLfloat get_Text_Size() const;
 
 	Symvol_Unit pull_Symvol_Unit(char symvol);
-
+	 
 	Font* get_Font();
 
 };

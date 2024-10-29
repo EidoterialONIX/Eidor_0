@@ -7,6 +7,8 @@ add_executable(Eidor_0 src/main.cpp
 src/camera.h src/camera.cpp 
 src/collider.h src/collider.cpp  
 src/collision.h src/collision.cpp 
+src/interface.h src/interface.cpp 
+src/body.h src/body.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 

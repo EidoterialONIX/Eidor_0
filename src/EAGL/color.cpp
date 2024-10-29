@@ -25,13 +25,13 @@ void Color::set_Color(
 
 }
 
-GLfloat* Color::pull_Color() const {
-	GLfloat color[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-
-	color[0] = 1.0f / 255.0f * this->_r; color[1] = 1.0f / 255.0f * this->_g;
-	color[2] = 1.0f / 255.0f * this->_b; color[3] = 1.0f / 255.0f * this->_a;
+GLfloat Color::pull_Color(GLuint index) const {
 	
-	return color;
+	if (index == 0) return this->_r / 255.f;
+	else if (index == 1) return this->_g / 255.f;
+	else if (index == 2) return this->_b / 255.f;
+	else if (index == 3) return this->_a / 255.f;
+	
 }
 
 void Color::out_Information() const {

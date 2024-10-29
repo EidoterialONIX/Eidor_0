@@ -109,19 +109,54 @@ void Camera::reset_velosity() {
 
 }
 
-void Camera::render_Sprite(
-	Rect& rect,
+
+void Camera::render_Background(
 	Shader_Program& shader,
-	Texture& texture,
-	Sprite& sprite
+	Sprite& sprite,
+	Vector2D_f transform,
+	Vector2D_f position, Vector2D_f size
 ) {
+	Rect rect;
+
+	rect.set_Position(position);
+	rect.set_Size(size);
 
 	rect.set_Color(sprite.get_Color_Filter());
 
 	if (this->_time->get_Frames() % 10 == 0) {
 		sprite.update_Animation();
 	}
+
+	Vector2D_f texture_points[4];
+	texture_points[0] = sprite.pull_Texture_Point(0); texture_points[1] = sprite.pull_Texture_Point(1);
+	texture_points[2] = sprite.pull_Texture_Point(2); texture_points[3] = sprite.pull_Texture_Point(3);
 	
+	rect.set_Texture_Points(texture_points);
+
+	this->_render->DrawBackground(
+		rect,
+		shader,
+		sprite.get_Texture(),
+		transform
+	);
+
+}
+
+void Camera::render_Sprite(
+	Shader_Program& shader,
+	Sprite& sprite,
+	Vector2D_f position, Vector2D_f size
+) {
+	Rect rect;
+
+	rect.set_Position(position);
+	rect.set_Size(size);
+
+	rect.set_Color(sprite.get_Color_Filter());
+
+	if (this->_time->get_Frames() % 10 == 0) {
+		sprite.update_Animation();
+	}
 
 	Vector2D_f texture_points[4];
 
@@ -135,7 +170,7 @@ void Camera::render_Sprite(
 	this->_render->DrawSprite(
 		rect,
 		shader,
-		texture.get_ID()
+		sprite.get_Texture()
 	);
 
 }

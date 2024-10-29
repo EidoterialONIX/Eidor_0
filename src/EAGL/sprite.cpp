@@ -46,6 +46,8 @@ void Sprite::init_Animation_Unit(
 
 	this->_space_pixel_x = _space_pixel_x; this->_space_pixel_y = _space_pixel_y;
 
+	this->update_Animation();
+
 }
 
 void Sprite::set_Color_Filter(Color color_filter) {

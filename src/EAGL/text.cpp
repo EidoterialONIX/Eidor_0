@@ -48,32 +48,28 @@ GLfloat Text::get_Text_Size() const {
 Symvol_Unit Text::pull_Symvol_Unit(char symvol) {
 	Symvol_Unit symvol_unit;
 
-#include <iostream>
-
-	std::cout << this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x << std::endl;
-
 	symvol_unit.texture_point_0 = Vector2D_f(
-		(0 + (this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
+		(0 + abs(this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
 		this->_font->get_Size_Symvol_Map().x,
-		(this->_font->get_Space_Symvol().y + (this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) / 
+		(this->_font->get_Space_Symvol().y + abs(this->_font->get_Size_Symvol_Map().y - this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
 		this->_font->get_Size_Symvol_Map().y
 	);
 	symvol_unit.texture_point_1 = Vector2D_f(
-		(this->_font->get_Space_Symvol().x + (this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) / 
+		(this->_font->get_Space_Symvol().x + abs(this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
 		this->_font->get_Size_Symvol_Map().x,
-		(this->_font->get_Space_Symvol().y + (this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
+		(this->_font->get_Space_Symvol().y + abs(this->_font->get_Size_Symvol_Map().y - this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
 		this->_font->get_Size_Symvol_Map().y
 	);
 	symvol_unit.texture_point_2 = Vector2D_f(
-		(this->_font->get_Space_Symvol().x + (this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
+		(this->_font->get_Space_Symvol().x + abs(this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
 		this->_font->get_Size_Symvol_Map().x,
-		(0 + (this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
+		(0 + abs(this->_font->get_Size_Symvol_Map().y - this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
 		this->_font->get_Size_Symvol_Map().y
 	);
 	symvol_unit.texture_point_3 = Vector2D_f(
-		(0 + (this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
+		(0 + abs(this->_font->get_Space_Symvol().x * this->_font->get_Symvol_id(symvol).x)) /
 		this->_font->get_Size_Symvol_Map().x,
-		(0 + (this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
+		(0 + abs(this->_font->get_Size_Symvol_Map().y - this->_font->get_Space_Symvol().y * this->_font->get_Symvol_id(symvol).y)) /
 		this->_font->get_Size_Symvol_Map().y
 	);
 

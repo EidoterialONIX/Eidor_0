@@ -13,6 +13,12 @@
 
 #include "camera.h"
 
+#include <cppconn/driver.h> 
+#include <cppconn/exception.h> 
+#include <cppconn/statement.h> 
+#include <mysql_connection.h> 
+#include <mysql_driver.h> 
+
 //#include "player.h"
 
 #include <iostream>
@@ -97,51 +103,119 @@ int main(void)
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
 
+
+    /// MYSQL //
+    /*
+    try {
+        sql::mysql::MySQL_Driver* driver;
+        sql::Connection* con;
+        sql::ConnectOptionsMap connection_properties;
+
+        connection_properties["hostName"] = "localhost";
+        connection_properties["userName"] = "root";
+        connection_properties["password"] = "Eido_12_terial_78";
+        connection_properties["schema"] = "eidor_0";
+        connection_properties["port"] = 3306;
+        connection_properties["OPT_RECONNECT"] = true;
+
+        driver = sql::mysql::get_mysql_driver_instance();
+        con = driver->connect(connection_properties);
+
+        con->setSchema("eidor_0"); // your database name
+
+        sql::Statement* stmt;
+        stmt = con->createStatement();
+
+        // SQL query to retrieve data from the table
+        std::string selectDataSQL = "SELECT * FROM `players_characteristics`";
+
+        sql::ResultSet* res
+            = stmt->executeQuery(selectDataSQL);
+
+        // Loop through the result set and display data
+        int count = 0;
+        while (res->next()) {
+            std::cout << " Player life " << ++count << ": "
+                << res->getString("life_point_correct") << std::endl;
+        }
+
+        delete res;
+        delete stmt;
+        delete con;
+    }
+    catch (sql::SQLException& e) {
+        std::cerr << "SQL Error: " << e.what() << std::endl;
+        return 0;
+    }
+    */
+    /// ////////////////////////////////////////////////
+
+
+
+    ///  Shader /////////////////////////////////////////////////////
     Shader_Program shader(
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Vertex.txt",
         "E:/C++ projects/Eidor_0/Shaders/Basic_Shader/Fragment.txt"
     );
 
-
-
-    Texture _texture1, _texture2;
+    Shader_Program shader_bg(
+        "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Vertex.txt",
+        "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt"
+    );
+    /// /////////////////////////////////////////////////////////////
 
     Font _font;
+
     _font.load_Font(
-        "E:/C++ projects/Eidor_0/src/assets/Font/Number_FONT.png",
-        Vector2D_f(160, 16),
-        Vector2D_f(16, 16)
+        "E:../src/assets/Font/Font_EAGL.png",
+        Vector2D_f(1184.0f, 16.0f),
+        Vector2D_f(16.0f, 16.0f)
     );
 
-    Text text(&_font);
+    /// Texture /////////////////////////////////////////////////////////
+    Texture tx_main_menu_background;
+    Texture tx_icon_spell_croul;
 
-    text.set_Text("54335433");
-    text.set_Color(Color(255, 255, 255, 255));
-    text.set_Start_Position(Vector2D_f(100, 30));
-    text.set_Text_Size(16.0f);
-
-    _texture1.load_Texture(
-        "E:/C++ projects/Eidor_0/src/assets/Background/main_background_menu.jpg",
+    tx_main_menu_background.load_Texture(
+        "E:../src/assets/Background/main_background_menu.jpg",
         3
     );
-    _texture2.load_Texture(
-        "E:/C++ projects/Eidor_0/src/assets/spell/animation/spell_Crous.png",
+    tx_icon_spell_croul.load_Texture(
+        "E:../src/assets/Spell/icon_spell_croul.png",
         4
     );
 
-    Sprite spell_crous;
+    /// //////////////////////////////////////////////////////////////////
 
-    spell_crous.set_Sprite(
+    /// Sprite //////////////////////////////////////////////////////////
+    Sprite sp_main_menu_background;
+    Sprite sp_icon_spell_croul;
+
+    sp_main_menu_background.set_Sprite(
         Color(255, 255, 255, 255),
         Vector2D_f(), Vector2D_f(),
         Vector2D_f(), Vector2D_f()
     );
-    spell_crous.bind_Texture(&_texture2);
-    spell_crous.init_Animation_Unit(
-        6,
-        32,
-        32
+    sp_main_menu_background.bind_Texture(&tx_main_menu_background);
+    sp_main_menu_background.init_Animation_Unit(
+        1,
+        128.0f, 128.0f
     );
+    
+    sp_icon_spell_croul.set_Sprite(
+        Color(255, 255, 255, 255),
+        Vector2D_f(), Vector2D_f(),
+        Vector2D_f(), Vector2D_f()
+    );
+    sp_icon_spell_croul.bind_Texture(&tx_icon_spell_croul);
+    sp_icon_spell_croul.init_Animation_Unit(
+        1,
+        32.0f, 32.0f
+    );
+
+    /// /////////////////////////////////////////////////////////////////
+
+ 
 
     Render _render(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
     Time _time;
@@ -153,24 +227,13 @@ int main(void)
         Vector2D_f(3000.0f, 5000.0f)
     );
 
-    Rect rect1, rect2;
+    Text _text(&_font);
 
-    Vector2D_f _texture_points[4] = {
-        Vector2D_f(0.0f, 1.0f),
-        Vector2D_f(1.0f, 1.0f),
-        Vector2D_f(1.0f, 0.0f),
-        Vector2D_f(0.0f, 0.0f),
-    };
+    _text.set_Text("Hello world, life points = 78");
+    _text.set_Start_Position(Vector2D_f(0.0f, 0.0f));
+    _text.set_Text_Size(16.0f);
+    _text.set_Color(Color(255, 255, 255, 255));
 
-    rect1.set_Position(Vector2D_f(0.0f, 0.0f));
-    rect1.set_Size(Vector2D_f(32, 32));
-    rect1.set_Color(Color(255, 0, 0, 255));
-    rect1.set_Texture_Points(_texture_points);
-
-    rect2.set_Position(Vector2D_f(100.0f, 100.0f));
-    rect2.set_Size(Vector2D_f(32, 32));
-    rect2.set_Color(Color(255, 255, 255, 255));
-    rect2.set_Texture_Points(_texture_points);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -186,26 +249,39 @@ int main(void)
             _time.increment_Updates();
             _time.decrement_Delta_Time();
 
+
+
+            /// Hunt error ///////////////////////////////////
+            GLenum err;
+            while ((err = glGetError()) != GL_NO_ERROR) {
+                std::cout << "OpenGL error: " << err << std::endl;
+            }
+            /// ///////////////////////////////////////////////
+
             _time.increment_Frames();
 
             /* Render here */
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            text.set_Text(std::to_string(_time.get_Frames()));
-
-            rect2.set_Position(rect2.get_Position() + Vector2D_f(0.2, 0.2));
+            _camera.render_Background(
+                shader_bg,
+                sp_main_menu_background,
+                Vector2D_f(_option.WINDOW_SIZE[0] / 128, _option.WINDOW_SIZE[1] / 128),
+                Vector2D_f(0.0f, 0.0f), Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1])
+            );
+            
 
             _camera.render_Sprite(
-                rect2,
                 shader,
-                _texture2,
-                spell_crous
+                sp_icon_spell_croul,
+                Vector2D_f(100.0f, 100.0f), Vector2D_f(32.0f, 32.0f)
             );
 
             _camera.render_Text(
-                text,
+                _text,
                 shader
             );
+            
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
@@ -216,12 +292,10 @@ int main(void)
 
         }
 
-        
-
         if (glfwGetTime() - _time.get_Timer() >= 1.0f) {
             _time.increment_Timer();
 
-            /*
+            
             std::cout
                 << "FPS: "
                 << _time.get_Frames()
@@ -230,8 +304,8 @@ int main(void)
                 << " Timer: "
                 << _time.get_Timer()
                 << std::endl;
-            */
-            /*
+            
+            
             std::cout
                 << "Now time: "
                 << _time.get_Now_Time()
@@ -240,7 +314,7 @@ int main(void)
                 << " Delta time: "
                 << _time.get_Delta_Time()
                 << std::endl;
-            */
+            
             
 
             _time.reset_Frames();

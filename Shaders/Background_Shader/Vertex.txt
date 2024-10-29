@@ -1,8 +1,9 @@
 #version 140
 
 in vec3 aPos;
-in vec3 aColor;
+in vec4 aColor;
 in vec2 aTexCord;
+in vec2 aTransform;
 
 out vec4 ourColor;
 out vec2 TexCord;
@@ -11,7 +12,7 @@ void main() {
 
 	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);
 	
-	ourColor = vec4(aColor, 1.0f);
-	TexCord = vec2(aTexCord.x * 30, aTexCord.y * 50);
+	ourColor = aColor;
+	TexCord = vec2(aTexCord.x * aTransform.x, aTexCord.y * aTransform.y);
 	
 }

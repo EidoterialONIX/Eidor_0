@@ -56,11 +56,17 @@ public:
 	void change_Velosity(int side);
 	void reset_velosity();
 
-	void render_Sprite(
-		Rect& rect,
+	void render_Background(
 		Shader_Program& shader,
-		Texture& texture,
-		Sprite& sprite
+		Sprite& sprite,
+		Vector2D_f transform,
+		Vector2D_f position, Vector2D_f size
+	);
+
+	void render_Sprite(
+		Shader_Program& shader,
+		Sprite& sprite,
+		Vector2D_f position, Vector2D_f size
 	);
 
 	void render_Text(

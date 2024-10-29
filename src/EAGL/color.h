@@ -25,7 +25,7 @@ public:
 		GLuint b, GLuint a
 	);
 
-	GLfloat* pull_Color() const;
+	GLfloat pull_Color(GLuint index) const;
 
 	void out_Information() const;
 

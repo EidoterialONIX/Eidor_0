@@ -15,9 +15,6 @@ class Render {
 
     Transform _transform;
 
-    GLuint VBO = 0;
-    GLuint VAO = 0;
-
     void CORDINAT_CONVERTER(
         Vector2D_f* positional_points,
         GLuint count_points
@@ -26,6 +23,13 @@ class Render {
 public:
 
     Render(Vector2D_f screen_size);
+
+    void DrawBackground(
+        Rect RECT,
+        Shader_Program shader,
+        GLuint& texture_id,
+        Vector2D_f transform
+    );
 
     void DrawSprite(
         Rect RECT,
