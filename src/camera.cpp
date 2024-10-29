@@ -4,11 +4,13 @@
 
 
 Camera::Camera(
+	GraphicInterface* grph_interface,
 	Render* render,
 	Time* time,
 	Vector2D_f size_screen,
 	Vector2D_f max_size_map
 ) {
+	this->_grph_interface = grph_interface;
 	this->_render = render;
 	this->_time = time;
 
@@ -109,37 +111,61 @@ void Camera::reset_velosity() {
 
 }
 
+/// Render GraphicInterface on screen
+void Camera::renderGraphicInterface(Shader_Program& shader, Shader_Program& shader_bg) {
 
-void Camera::render_Background(
-	Shader_Program& shader,
-	Sprite& sprite,
-	Vector2D_f transform,
-	Vector2D_f position, Vector2D_f size
-) {
-	Rect rect;
-
-	rect.set_Position(position);
-	rect.set_Size(size);
-
-	rect.set_Color(sprite.get_Color_Filter());
-
-	if (this->_time->get_Frames() % 10 == 0) {
-		sprite.update_Animation();
-	}
-
+	/// Create rectangle mask from render
+	Rect mask;
+	/// Create mask from texture points 
 	Vector2D_f texture_points[4];
-	texture_points[0] = sprite.pull_Texture_Point(0); texture_points[1] = sprite.pull_Texture_Point(1);
-	texture_points[2] = sprite.pull_Texture_Point(2); texture_points[3] = sprite.pull_Texture_Point(3);
-	
-	rect.set_Texture_Points(texture_points);
 
+
+	/// Render GraphicBackgroundUnit
+	mask.set_Position(
+		this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().bd_graphic_unit.get_Position()
+	);
+	mask.set_Size(
+		this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().bd_graphic_unit.get_Size()
+	);
+	mask.set_Color(
+		this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.get_Color_Filter()
+	);
+	texture_points[0] = this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.pull_Texture_Point(0);
+	texture_points[1] = this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.pull_Texture_Point(1);
+	texture_points[2] = this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.pull_Texture_Point(2);
+	texture_points[3] = this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.pull_Texture_Point(3);
+	mask.set_Texture_Points(texture_points);
 	this->_render->DrawBackground(
-		rect,
-		shader,
-		sprite.get_Texture(),
-		transform
+		mask,
+		shader_bg,
+		this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().gru->sp_graphic_unit.get_Texture(),
+		this->_grph_interface->takeInterfaceUnit().pullGraphicBackgroundUnit().bg_transformation
 	);
 
+	/// Loop from render GraphicObjectUnit
+	for (int i{ 0 }; i < this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
+		mask.set_Position(
+			this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].bd_graphic_unit.get_Position()
+		);
+		mask.set_Size(
+			this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].bd_graphic_unit.get_Size()
+		);
+		mask.set_Color(
+			this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.get_Color_Filter()
+		);
+		texture_points[0] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(0);
+		texture_points[1] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(1);
+		texture_points[2] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(2);
+		texture_points[3] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(3);
+		mask.set_Texture_Points(texture_points);
+		this->_render->DrawSprite(
+			mask,
+			shader,
+			this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.get_Texture()
+		);
+
+	}
+	
 }
 
 void Camera::render_Sprite(

@@ -1,31 +1,24 @@
 #pragma once
 
-#include "EAGL/vectors.h"
-#include "EAGL/text.h"
-#include "EAGL/sprite.h"
-
+#include "GraphicResource.h"
 #include "collider.h"
 #include "body.h"
 
-#include <vector>
 
 
 struct GraphicBackgroundUnit {
-	Texture tx_graphic_unit;
-	Sprite sp_graphik_unit;
+	GraphicResourceUnit* gru;
 	Body bd_graphic_unit;
 	Vector2D_f bg_transformation;
 
 };
 
 struct GraphicObjectUnit {
-	Texture tx_graphic_unit;
-	Sprite sp_graphik_unit;
+	GraphicResourceUnit* gru;
 	Body bd_graphic_unit;
 	Collider cl_graphic_unit;
 
 };
-
 
 class InterfaceUnit {
 private:
@@ -38,26 +31,45 @@ private:
 
 public:
 
+	InterfaceUnit() = default;
+
 	InterfaceUnit(GLuint auto_id);
 
+	void setGraphicBackgroundUnit(
+		GraphicResourceUnit* gru,
+		Vector2D_f size_background,
+		Vector2D_f transform
+	);
+	GraphicBackgroundUnit pullGraphicBackgroundUnit() const;
 
-
-
+	void addGraphicObjectUnit(
+		GraphicResourceUnit* gru,
+		Vector2D_f position_object,
+		Vector2D_f size_object
+	);
+	std::vector<GraphicObjectUnit> pullGraphicObjectUnit() const;
 
 };
 
 class GraphicInterface {
 private:
 
-	std::string _path = "";
+	GraphicResource* _graphic_resource;
 
+	GLuint _auto_id_increment = 0;
 
+	GLuint _active_interface_unit = 0;
 
+	std::vector<InterfaceUnit> _interface_units;
 
 public:
 
+	GraphicInterface(GraphicResource* graphic_resource);
 
+	void addNewInterfaceUnit();
 
+	InterfaceUnit& takeInterfaceUnit();
 
+	GraphicResource* getGraphicResource();
 
 };

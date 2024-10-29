@@ -12,12 +12,17 @@
 #include "collision.h"
 
 #include "camera.h"
+#include "interface.h"
+#include "GraphicResource.h"
 
+
+/*
 #include <cppconn/driver.h> 
 #include <cppconn/exception.h> 
 #include <cppconn/statement.h> 
 #include <mysql_connection.h> 
 #include <mysql_driver.h> 
+*/
 
 //#include "player.h"
 
@@ -150,6 +155,56 @@ int main(void)
     */
     /// ////////////////////////////////////////////////
 
+    GraphicResource grph_resource(
+        "E:../src/assets/"
+    );
+
+    grph_resource.addGraphicResourceUnit(
+        "Background/main_background_menu.jpg",
+        3,
+        Vector2D_f(128.0f, 128.0f),
+        1
+    );
+    grph_resource.addGraphicResourceUnit(
+        "Spell/icon_spell_croul.png",
+        4,
+        Vector2D_f(32.0f, 32.0f),
+        1
+    );
+    grph_resource.addGraphicResourceUnit(
+        "Button/button_in_menu.png",
+        4,
+        Vector2D_f(128.0f, 32.0f),
+        1
+    );
+
+    GraphicInterface grph_interface(
+        &grph_resource
+    );
+
+    grph_interface.addNewInterfaceUnit();
+
+    grph_interface.takeInterfaceUnit().setGraphicBackgroundUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(0),
+        Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
+        Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(1),
+        Vector2D_f(100.0f, 100.0f),
+        Vector2D_f(32.0f, 32.0f)
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
+        Vector2D_f(250.0f, 100.0f),
+        Vector2D_f(128.0f, 32.0f)
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
+        Vector2D_f(250.0f, 300.0f),
+        Vector2D_f(128.0f, 32.0f)
+    );
+   
 
 
     ///  Shader /////////////////////////////////////////////////////
@@ -163,71 +218,19 @@ int main(void)
         "E:/C++ projects/Eidor_0/Shaders/Background_Shader/Fragment.txt"
     );
     /// /////////////////////////////////////////////////////////////
-
-    Font _font;
-
-    _font.load_Font(
-        "E:../src/assets/Font/Font_EAGL.png",
-        Vector2D_f(1184.0f, 16.0f),
-        Vector2D_f(16.0f, 16.0f)
-    );
-
-    /// Texture /////////////////////////////////////////////////////////
-    Texture tx_main_menu_background;
-    Texture tx_icon_spell_croul;
-
-    tx_main_menu_background.load_Texture(
-        "E:../src/assets/Background/main_background_menu.jpg",
-        3
-    );
-    tx_icon_spell_croul.load_Texture(
-        "E:../src/assets/Spell/icon_spell_croul.png",
-        4
-    );
-
-    /// //////////////////////////////////////////////////////////////////
-
-    /// Sprite //////////////////////////////////////////////////////////
-    Sprite sp_main_menu_background;
-    Sprite sp_icon_spell_croul;
-
-    sp_main_menu_background.set_Sprite(
-        Color(255, 255, 255, 255),
-        Vector2D_f(), Vector2D_f(),
-        Vector2D_f(), Vector2D_f()
-    );
-    sp_main_menu_background.bind_Texture(&tx_main_menu_background);
-    sp_main_menu_background.init_Animation_Unit(
-        1,
-        128.0f, 128.0f
-    );
-    
-    sp_icon_spell_croul.set_Sprite(
-        Color(255, 255, 255, 255),
-        Vector2D_f(), Vector2D_f(),
-        Vector2D_f(), Vector2D_f()
-    );
-    sp_icon_spell_croul.bind_Texture(&tx_icon_spell_croul);
-    sp_icon_spell_croul.init_Animation_Unit(
-        1,
-        32.0f, 32.0f
-    );
-
-    /// /////////////////////////////////////////////////////////////////
-
  
 
     Render _render(Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
     Time _time;
 
     Camera _camera(
+        &grph_interface,
         &_render,
         &_time,
         Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
         Vector2D_f(3000.0f, 5000.0f)
     );
 
-    Text _text(&_font);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -257,25 +260,7 @@ int main(void)
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            _camera.render_Background(
-                shader_bg,
-                sp_main_menu_background,
-                Vector2D_f(_option.WINDOW_SIZE[0] / 128, _option.WINDOW_SIZE[1] / 128),
-                Vector2D_f(0.0f, 0.0f), Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1])
-            );
-            
-
-            _camera.render_Sprite(
-                shader,
-                sp_icon_spell_croul,
-                Vector2D_f(100.0f, 100.0f), Vector2D_f(32.0f, 32.0f)
-            );
-
-            _camera.render_Text(
-                _text,
-                shader
-            );
-            
+            _camera.renderGraphicInterface(shader, shader_bg);
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
@@ -309,8 +294,6 @@ int main(void)
                 << _time.get_Delta_Time()
                 << std::endl;
             
-            
-
             _time.reset_Frames();
             _time.reset_Updates();
 

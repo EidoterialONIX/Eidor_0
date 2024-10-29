@@ -7,12 +7,15 @@
 #include "EAGL/time.h"
 #include "EAGL/text.h"
 
+#include "interface.h"
+
 #include <vector>
 #include <iostream>
 
 class Camera {
 private:
 
+	GraphicInterface* _grph_interface;
 	Render* _render;
 	Time* _time;
 
@@ -39,6 +42,7 @@ public:
 	Camera() = default;
 
 	Camera(
+		GraphicInterface* grph_interface,
 		Render* render,
 		Time* time,
 		Vector2D_f size_screen,
@@ -55,6 +59,8 @@ public:
 
 	void change_Velosity(int side);
 	void reset_velosity();
+
+	void renderGraphicInterface(Shader_Program& shader, Shader_Program& shader_bg);
 
 	void render_Background(
 		Shader_Program& shader,
