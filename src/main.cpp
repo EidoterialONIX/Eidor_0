@@ -229,12 +229,6 @@ int main(void)
 
     Text _text(&_font);
 
-    _text.set_Text("Hello world, life points = 78");
-    _text.set_Start_Position(Vector2D_f(0.0f, 0.0f));
-    _text.set_Text_Size(16.0f);
-    _text.set_Color(Color(255, 255, 255, 255));
-
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
