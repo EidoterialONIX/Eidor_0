@@ -10,6 +10,9 @@ src/collision.h src/collision.cpp
 src/interface.h src/interface.cpp 
 src/body.h src/body.cpp 
 src/GraphicResource.h src/GraphicResource.cpp 
+src/Player.h src/Player.cpp 
+src/World.h src/World.cpp 
+src/Structure.h src/Structure.cpp 
 
 src/EAGL/stb_image.h src/EAGL/stb_image.cpp 
 

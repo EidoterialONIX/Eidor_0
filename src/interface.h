@@ -17,6 +17,7 @@ struct GraphicObjectUnit {
 	GraphicResourceUnit* gru;
 	Body bd_graphic_unit;
 	Collider cl_graphic_unit;
+	Text _tt_graphic_unit;
 
 };
 
@@ -45,9 +46,17 @@ public:
 	void addGraphicObjectUnit(
 		GraphicResourceUnit* gru,
 		Vector2D_f position_object,
-		Vector2D_f size_object
+		Vector2D_f size_object,
+		Font* font
 	);
 	std::vector<GraphicObjectUnit> pullGraphicObjectUnit() const;
+	void setTextfromGraphicObjectUnit(
+		GLuint id,
+		std::string text,
+		Vector2D_f start_position,
+		GLfloat size_font
+	);
+
 
 };
 
@@ -71,5 +80,8 @@ public:
 	InterfaceUnit& takeInterfaceUnit();
 
 	GraphicResource* getGraphicResource();
+
+	void changeActiveInterfaceUnit(GLuint id);
+	GLuint getActiveInterfaceUnit() const;
 
 };

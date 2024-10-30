@@ -33,7 +33,14 @@ public:
 		Vector2D_f size_texture,
 		GLuint count_frame
 	);
+	void loadFont(
+		std::string path,
+		Vector2D_f size_symvol_map,
+		Vector2D_f space_symvol
+	);
 
 	GraphicResourceUnit& getGraphicResourceUnit(GLuint index);
+
+	Font* getFont();
 
 };

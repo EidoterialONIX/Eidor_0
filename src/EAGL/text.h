@@ -27,6 +27,8 @@ private:
 
 public:
 
+	Text() = default;
+
 	Text(Font* font);
 
 	void set_Text(std::string text);

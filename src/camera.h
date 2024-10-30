@@ -8,6 +8,7 @@
 #include "EAGL/text.h"
 
 #include "interface.h"
+#include "World.h"
 
 #include <vector>
 #include <iostream>
@@ -15,6 +16,7 @@
 class Camera {
 private:
 
+	World* _world;
 	GraphicInterface* _grph_interface;
 	Render* _render;
 	Time* _time;
@@ -42,6 +44,7 @@ public:
 	Camera() = default;
 
 	Camera(
+		World* world,
 		GraphicInterface* grph_interface,
 		Render* render,
 		Time* time,
@@ -61,24 +64,7 @@ public:
 	void reset_velosity();
 
 	void renderGraphicInterface(Shader_Program& shader, Shader_Program& shader_bg);
-
-	void render_Background(
-		Shader_Program& shader,
-		Sprite& sprite,
-		Vector2D_f transform,
-		Vector2D_f position, Vector2D_f size
-	);
-
-	void render_Sprite(
-		Shader_Program& shader,
-		Sprite& sprite,
-		Vector2D_f position, Vector2D_f size
-	);
-
-	void render_Text(
-		Text&,
-		Shader_Program& shader
-	);
+	void renderWorld(Shader_Program& shader, Shader_Program& shader_bg);
 
 	void show_Info_Camera() const;
 

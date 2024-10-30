@@ -62,6 +62,20 @@ GraphicResource* GraphicInterface::getGraphicResource() {
 
 }
 
+/// Change ActiveInterfaceUnit
+//////////////////////////////////////////////////////////////////
+void GraphicInterface::changeActiveInterfaceUnit(GLuint id) {
+	this->_active_interface_unit = id;
+
+}
+
+/// Get ActiveInterfaceUnit
+//////////////////////////////////////////////////////////////////
+GLuint GraphicInterface::getActiveInterfaceUnit() const {
+	return this->_active_interface_unit;
+
+}
+
 
 
 
@@ -111,7 +125,8 @@ GraphicBackgroundUnit InterfaceUnit::pullGraphicBackgroundUnit() const {
 void InterfaceUnit::addGraphicObjectUnit(
 	GraphicResourceUnit* gru,
 	Vector2D_f position_object,
-	Vector2D_f size_object
+	Vector2D_f size_object,
+	Font* font
 ) {
 	this->_graphic_object_units.resize(this->_graphic_object_units.size() + 1);
 	
@@ -128,11 +143,29 @@ void InterfaceUnit::addGraphicObjectUnit(
 		true
 	);
 
+	this->_graphic_object_units[this->_graphic_object_units.size() - 1]._tt_graphic_unit = Text(font);
+
 }
 
 /// Pull GraphicObjectUnit
 //////////////////////////////////////////////////////////////////
 std::vector<GraphicObjectUnit> InterfaceUnit::pullGraphicObjectUnit() const {
 	return this->_graphic_object_units;
+
+}
+
+void InterfaceUnit::setTextfromGraphicObjectUnit(
+	GLuint id,
+	std::string text,
+	Vector2D_f start_position,
+	GLfloat size_font
+) {
+	this->_graphic_object_units[id]._tt_graphic_unit.set_Text(text);
+	
+	this->_graphic_object_units[id]._tt_graphic_unit.set_Color(Color(255, 255, 255, 255));
+
+	this->_graphic_object_units[id]._tt_graphic_unit.set_Start_Position(start_position);
+
+	this->_graphic_object_units[id]._tt_graphic_unit.set_Text_Size(size_font);
 
 }

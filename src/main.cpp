@@ -14,6 +14,7 @@
 #include "camera.h"
 #include "interface.h"
 #include "GraphicResource.h"
+#include "World.h"
 
 
 /*
@@ -37,6 +38,9 @@ struct Option {
 };
 
 Option _option;
+GraphicInterface* ptr_grph_interface;
+Player* ptr_player;
+Collision collision;
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
@@ -53,12 +57,42 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
 }
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-
+    glfwGetCursorPos(window, &_option.CURSOR_POSITION[0], &_option.CURSOR_POSITION[1]);
 
 }
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-{
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+
+    /// Main menu 
+    if (ptr_grph_interface->getActiveInterfaceUnit() == 0) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
+
+                if (collision.check_Interface_Collision(
+                    ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
+                    ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
+                    _option.CURSOR_POSITION[0],
+                    _option.CURSOR_POSITION[1]
+                )) {
+                    ptr_grph_interface->changeActiveInterfaceUnit(i);
+                }
+
+            }
+        }
+
+    }
+    else if (ptr_grph_interface->getActiveInterfaceUnit() == 1) {
+        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+            for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
+
+
+            }
+        }
+
+    }
+        
+
+
        
 }
 
@@ -155,8 +189,18 @@ int main(void)
     */
     /// ////////////////////////////////////////////////
 
+
+    /// Interface ////////////////////
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
     GraphicResource grph_resource(
         "E:../src/assets/"
+    );
+
+    grph_resource.loadFont(
+        "Font/Font_EAGL.png",
+        Vector2D_f(1184.0f, 16.0f),
+        Vector2D_f(16.0f, 16.0f)
     );
 
     grph_resource.addGraphicResourceUnit(
@@ -190,21 +234,91 @@ int main(void)
         Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
     );
     grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
-        &grph_interface.getGraphicResource()->getGraphicResourceUnit(1),
-        Vector2D_f(100.0f, 100.0f),
-        Vector2D_f(32.0f, 32.0f)
-    );
-    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
         &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
         Vector2D_f(250.0f, 100.0f),
-        Vector2D_f(128.0f, 32.0f)
+        Vector2D_f(210.0f, 32.0f),
+        grph_interface.getGraphicResource()->getFont()
     );
     grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
         &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
         Vector2D_f(250.0f, 300.0f),
-        Vector2D_f(128.0f, 32.0f)
+        Vector2D_f(210.0f, 32.0f),
+        grph_interface.getGraphicResource()->getFont()
     );
-   
+    grph_interface.takeInterfaceUnit().setTextfromGraphicObjectUnit(
+        0,
+        "Single Play",
+        Vector2D_f(270.0f, 110.0f),
+        16.0f
+    );
+    grph_interface.takeInterfaceUnit().setTextfromGraphicObjectUnit(
+        1,
+        "Online Play",
+        Vector2D_f(270.0f, 310.0f),
+        16.0f
+    );
+
+    grph_interface.addNewInterfaceUnit();
+    grph_interface.changeActiveInterfaceUnit(1);
+    grph_interface.takeInterfaceUnit().setGraphicBackgroundUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(0),
+        Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
+        Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
+        Vector2D_f(100.0f, 100.0f),
+        Vector2D_f(128.0f, 32.0f),
+        grph_interface.getGraphicResource()->getFont()
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
+        Vector2D_f(200.0f, 200.0f),
+        Vector2D_f(128.0f, 32.0f),
+        grph_interface.getGraphicResource()->getFont()
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
+        Vector2D_f(300.0f, 320.0f),
+        Vector2D_f(128.0f, 32.0f),
+        grph_interface.getGraphicResource()->getFont()
+    );
+    grph_interface.changeActiveInterfaceUnit(0);
+
+    ptr_grph_interface = &grph_interface;
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+
+     /// World ////////////////////
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+
+    Player player;
+
+    player.createPlayer(
+        Vector2D_f(100.0f, 100.0f), Characteristic()
+    );
+
+    GraphicResource grph_resource_world(
+        "E:../src/assets/"
+    );
+    grph_resource_world.addGraphicResourceUnit(
+        "Background/main_background_game.jpg",
+        3,
+        Vector2D_f(128.0f, 128.0f),
+        1
+    );
+
+    World world(
+        &grph_resource_world
+    );
+
+    world.setWorldBackgroundUnit(
+        &world.getGraphicResource()->getGraphicResourceUnit(0),
+        Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
+        Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+    );
+
 
 
     ///  Shader /////////////////////////////////////////////////////
@@ -224,6 +338,7 @@ int main(void)
     Time _time;
 
     Camera _camera(
+        &world,
         &grph_interface,
         &_render,
         &_time,
@@ -259,6 +374,11 @@ int main(void)
 
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+            if (grph_interface.getActiveInterfaceUnit() == 1) {
+                _camera.renderWorld(shader, shader_bg);
+            }
 
             _camera.renderGraphicInterface(shader, shader_bg);
 

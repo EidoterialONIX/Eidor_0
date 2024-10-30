@@ -72,9 +72,32 @@ void GraphicResource::addGraphicResourceUnit(
 
 }
 
+/// Load Font
+//////////////////////////////////////////////////////////////////
+void GraphicResource::loadFont(
+	std::string path,
+	Vector2D_f size_symvol_map,
+	Vector2D_f space_symvol
+) {
+	this->_font.load_Font(
+		(this->_path + path).c_str(),
+		size_symvol_map,
+		space_symvol
+	);
+
+}
+
+
 /// Get GraphicResourceUnit
 //////////////////////////////////////////////////////////////////
 GraphicResourceUnit& GraphicResource::getGraphicResourceUnit(GLuint index) {
 	return this->_graphic_resource_units[index];
+
+}
+
+/// Get Font
+//////////////////////////////////////////////////////////////////
+Font* GraphicResource::getFont() {
+	return &this->_font;
 
 }
