@@ -25,7 +25,9 @@ private:
 
 	Characteristic _characteristic;
 
-	float _speed = 0.5f;
+	float _speed = 3.0f;
+
+	Vector2D_f _velosyty;
 
 public:
 
@@ -36,7 +38,9 @@ public:
 		Characteristic
 	);
 
-	void movePlayer(Vector2D_f velosity);
+	void changeVelosity(Vector2D_f velosity);
+
+	void movePlayer();
 
 	Body getBody() const;
 

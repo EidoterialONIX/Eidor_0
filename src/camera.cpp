@@ -153,15 +153,15 @@ void Camera::renderWorld(Shader_Program& shader, Shader_Program& shader_bg) {
 		mask.set_Color(
 			this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.get_Color_Filter()
 		);
-		texture_points[0] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(0);
-		texture_points[1] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(1);
-		texture_points[2] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(2);
-		texture_points[3] = this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(3);
+		texture_points[0] = this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(0);
+		texture_points[1] = this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(1);
+		texture_points[2] = this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(2);
+		texture_points[3] = this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.pull_Texture_Point(3);
 		mask.set_Texture_Points(texture_points);
 		this->_render->DrawSprite(
 			mask,
 			shader,
-			this->_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].gru->sp_graphic_unit.get_Texture()
+			this->_world->pullWorldObjectUnit()[i].gru->sp_graphic_unit.get_Texture()
 		);
 
 	}

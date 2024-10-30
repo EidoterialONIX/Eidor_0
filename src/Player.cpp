@@ -7,11 +7,11 @@ void Player::createPlayer(
 ) {
 	this->_body.set_Body(
 		position,
-		Vector2D_f(64.0f, 64.0f)
+		Vector2D_f(32.0f, 32.0f)
 	);
 	this->_collider.set_Collider(
 		position,
-		Vector2D_f(64.0f, 64.0f),
+		Vector2D_f(32.0f, 32.0f),
 		true
 	);
 
@@ -19,9 +19,14 @@ void Player::createPlayer(
 
 }
 
-void Player::movePlayer(Vector2D_f velosity) {
-	this->_body.set_Position(this->_body.get_Position() + velosity);
-	this->_collider.set_Position(this->_collider.get_Position() + velosity);
+void Player::movePlayer() {
+	this->_body.set_Position(this->_body.get_Position() + this->_velosyty);
+	this->_collider.set_Position(this->_collider.get_Position() + this->_velosyty);
+
+}
+
+void Player::changeVelosity(Vector2D_f velosity) {
+	this->_velosyty = velosity;
 
 }
 

@@ -40,6 +40,7 @@ struct Option {
 Option _option;
 GraphicInterface* ptr_grph_interface;
 Player* ptr_player;
+World* ptr_world;
 Collision collision;
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
@@ -53,6 +54,31 @@ void glfwKeyCallback(GLFWwindow* pWindow, int key, int scancode, int action, int
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(pWindow, GL_TRUE);
+    }
+    else if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        ptr_player->changeVelosity(Vector2D_f(ptr_player->getSpeed(), 0.0f));
+    }
+    else if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+        ptr_player->changeVelosity(Vector2D_f(-ptr_player->getSpeed(), 0.0f));
+    }
+    else if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, -ptr_player->getSpeed()));
+    }
+    else if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, ptr_player->getSpeed()));
+    }
+
+    else if (key == GLFW_KEY_D && action == GLFW_RELEASE) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, 0.0f));
+    }
+    else if (key == GLFW_KEY_A && action == GLFW_RELEASE) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, 0.0f));
+    }
+    else if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, 0.0f));
+    }
+    else if (key == GLFW_KEY_S && action == GLFW_RELEASE) {
+        ptr_player->changeVelosity(Vector2D_f(0.0f, 0.0f));
     }
 }
 
@@ -141,55 +167,6 @@ int main(void)
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
-
-
-    /// MYSQL //
-    /*
-    try {
-        sql::mysql::MySQL_Driver* driver;
-        sql::Connection* con;
-        sql::ConnectOptionsMap connection_properties;
-
-        connection_properties["hostName"] = "localhost";
-        connection_properties["userName"] = "root";
-        connection_properties["password"] = "Eido_12_terial_78";
-        connection_properties["schema"] = "eidor_0";
-        connection_properties["port"] = 3306;
-        connection_properties["OPT_RECONNECT"] = true;
-
-        driver = sql::mysql::get_mysql_driver_instance();
-        con = driver->connect(connection_properties);
-
-        con->setSchema("eidor_0"); // your database name
-
-        sql::Statement* stmt;
-        stmt = con->createStatement();
-
-        // SQL query to retrieve data from the table
-        std::string selectDataSQL = "SELECT * FROM `players_characteristics`";
-
-        sql::ResultSet* res
-            = stmt->executeQuery(selectDataSQL);
-
-        // Loop through the result set and display data
-        int count = 0;
-        while (res->next()) {
-            std::cout << " Player life " << ++count << ": "
-                << res->getString("life_point_correct") << std::endl;
-        }
-
-        delete res;
-        delete stmt;
-        delete con;
-    }
-    catch (sql::SQLException& e) {
-        std::cerr << "SQL Error: " << e.what() << std::endl;
-        return 0;
-    }
-    */
-    /// ////////////////////////////////////////////////
-
-
     /// Interface ////////////////////
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
@@ -208,19 +185,43 @@ int main(void)
         3,
         Vector2D_f(128.0f, 128.0f),
         1
-    );
+    ); // 0
     grph_resource.addGraphicResourceUnit(
         "Spell/icon_spell_croul.png",
         4,
         Vector2D_f(32.0f, 32.0f),
         1
-    );
+    ); // 1
     grph_resource.addGraphicResourceUnit(
         "Button/button_in_menu.png",
         4,
         Vector2D_f(128.0f, 32.0f),
         1
-    );
+    ); // 2
+    grph_resource.addGraphicResourceUnit(
+        "Game_Interface/action_panel.png",
+        4,
+        Vector2D_f(256.0f, 32.0f),
+        1
+    ); // 3
+    grph_resource.addGraphicResourceUnit(
+        "Game_Interface/life_bar.png",
+        4,
+        Vector2D_f(128.0f, 16.0f),
+        1
+    ); // 4
+    grph_resource.addGraphicResourceUnit(
+        "Game_Interface/mana_bar.png",
+        4,
+        Vector2D_f(128.0f, 16.0f),
+        1
+    ); // 5
+    grph_resource.addGraphicResourceUnit(
+        "Game_Interface/energi_bar.png",
+        4,
+        Vector2D_f(128.0f, 16.0f),
+        1
+    ); // 6
 
     GraphicInterface grph_interface(
         &grph_resource
@@ -262,25 +263,31 @@ int main(void)
     grph_interface.changeActiveInterfaceUnit(1);
     grph_interface.takeInterfaceUnit().setGraphicBackgroundUnit(
         &grph_interface.getGraphicResource()->getGraphicResourceUnit(0),
-        Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
-        Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+        Vector2D_f(0.0f, 0.0f),
+        Vector2D_f(1.0f, 1.0f)
     );
     grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
-        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
-        Vector2D_f(100.0f, 100.0f),
-        Vector2D_f(128.0f, 32.0f),
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(3),
+        Vector2D_f(190.0f, 450.0f),
+        Vector2D_f(256.0f, 32.0f),
         grph_interface.getGraphicResource()->getFont()
     );
     grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
-        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
-        Vector2D_f(200.0f, 200.0f),
-        Vector2D_f(128.0f, 32.0f),
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(4),
+        Vector2D_f(100.0f, 430.0f),
+        Vector2D_f(128.0f, 16.0f),
         grph_interface.getGraphicResource()->getFont()
     );
     grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
-        &grph_interface.getGraphicResource()->getGraphicResourceUnit(2),
-        Vector2D_f(300.0f, 320.0f),
-        Vector2D_f(128.0f, 32.0f),
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(5),
+        Vector2D_f(250.0f, 430.0f),
+        Vector2D_f(128.0f, 16.0f),
+        grph_interface.getGraphicResource()->getFont()
+    );
+    grph_interface.takeInterfaceUnit().addGraphicObjectUnit(
+        &grph_interface.getGraphicResource()->getGraphicResourceUnit(6),
+        Vector2D_f(400.0f, 430.0f),
+        Vector2D_f(128.0f, 16.0f),
         grph_interface.getGraphicResource()->getFont()
     );
     grph_interface.changeActiveInterfaceUnit(0);
@@ -294,6 +301,13 @@ int main(void)
     //////////////////////////////////////////////////////
 
     Player player;
+    ptr_player = &player;
+    Structure rock;
+
+    rock.createStructure(
+        Vector2D_f(100.0f, 100.0f),
+        1
+    );
 
     player.createPlayer(
         Vector2D_f(100.0f, 100.0f), Characteristic()
@@ -308,15 +322,39 @@ int main(void)
         Vector2D_f(128.0f, 128.0f),
         1
     );
+    grph_resource_world.addGraphicResourceUnit(
+        "Struct/rock.png",
+        4,
+        Vector2D_f(128.0f, 128.0f),
+        1
+    );
+    grph_resource_world.addGraphicResourceUnit(
+        "Player/player.png",
+        4,
+        Vector2D_f(64.0f, 64.0f),
+        1
+    );
 
     World world(
         &grph_resource_world
     );
 
+    ptr_world = &world;
+
     world.setWorldBackgroundUnit(
         &world.getGraphicResource()->getGraphicResourceUnit(0),
         Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
         Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+    );
+    world.addWorldObjectUnit(
+        &world.getGraphicResource()->getGraphicResourceUnit(rock.getStructureId()),
+        rock.getBody().get_Position(),
+        rock.getBody().get_Size()
+    );
+    world.addWorldObjectUnit(
+        &world.getGraphicResource()->getGraphicResourceUnit(2),
+        player.getBody().get_Position(),
+        player.getBody().get_Size()
     );
 
 
@@ -377,10 +415,22 @@ int main(void)
 
 
             if (grph_interface.getActiveInterfaceUnit() == 1) {
+                
+
                 _camera.renderWorld(shader, shader_bg);
+                player.movePlayer();
+                world.updateDinamicObjectUnit(
+                    1,
+                    player.getBody().get_Position()
+                );
+
+                _camera.renderGraphicInterface(shader, shader_bg);
+
             }
 
-            _camera.renderGraphicInterface(shader, shader_bg);
+            if (grph_interface.getActiveInterfaceUnit() == 0) {
+                _camera.renderGraphicInterface(shader, shader_bg);
+            }
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);
