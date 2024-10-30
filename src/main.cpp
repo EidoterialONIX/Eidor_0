@@ -35,6 +35,10 @@ World* ptr_world;
 Collision collision;
 DB* ptr_DB;
 
+std::vector<GLuint> players_id;
+GLuint player_id = 0;
+GLuint world_id = 0;
+
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
     _option.WINDOW_SIZE[0] = width;
@@ -134,6 +138,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 _option.CURSOR_POSITION[1]
             )) {
                 ptr_DB->generateWorld(ptr_world, i, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
+                world_id = i;
                 ptr_grph_interface->changeActiveInterfaceUnit(3);
                 
             }
@@ -150,8 +155,9 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                 _option.CURSOR_POSITION[0],
                 _option.CURSOR_POSITION[1]
             )) {
-               ptr_DB->generatePlayer(ptr_world, ptr_player, i);
-               ptr_grph_interface->changeActiveInterfaceUnit(1);
+                player_id = i;
+                ptr_DB->generatePlayer(ptr_world, ptr_player, i);
+                ptr_grph_interface->changeActiveInterfaceUnit(1);
 
             }
 
@@ -159,8 +165,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
     }
     
-
-
        
 }
 
@@ -464,13 +468,18 @@ int main(void)
                 _camera.renderWorld(shader, shader_bg);
                 player.movePlayer();
                 world.updateDinamicObjectUnit(
-                    world.pullWorldObjectUnit().size() - 1,
+                    world.pullWorldObjectUnit().size() - (player_id + players_id.size()),
                     player.getBody().get_Position()
                 );
 
+
                 _camera.renderGraphicInterface(shader, shader_bg);
 
-                db.playerMove(player.getBody().get_Position(), 0);
+                db.playerDop(ptr_world, world_id, players_id, player_id);
+
+                db.playerMove(player.getBody().get_Position(), player_id);
+
+                db.updatePlayer(ptr_world, world_id, players_id);
             }
             else {
                 _camera.renderGraphicInterface(shader, shader_bg);
@@ -486,6 +495,7 @@ int main(void)
 
         }
 
+        /*
         if (glfwGetTime() - _time.get_Timer() >= 1.0f) {
             _time.increment_Timer();
 
@@ -512,10 +522,12 @@ int main(void)
             _time.reset_Frames();
             _time.reset_Updates();
 
-        }
 
+        }
+        */
     }
 
+    db.playerDisconect(player_id);
     glfwTerminate();
     return 0;
 }

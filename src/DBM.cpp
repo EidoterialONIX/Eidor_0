@@ -46,31 +46,23 @@ void DB::generateWorldVariable(GraphicInterface* grph_interface, Vector2D_f size
         int count_y = 0;
         while (res->next()) {
 
-            
 
+           
             grph_interface->takeInterfaceUnit().addGraphicObjectUnit(
                 &grph_interface->getGraphicResource()->getGraphicResourceUnit(2),
-                Vector2D_f(130.0f * count_x, 100.0f * count_y),
+                Vector2D_f(0.0f * count_x, 100.0f * count_y),
                 Vector2D_f(128.0f, 32.0f),
                 grph_interface->getGraphicResource()->getFont()
             );
             grph_interface->takeInterfaceUnit().setTextfromGraphicObjectUnit(
-                count_x + (count_y * 3),
+                count_y,
                 "World " + res->getString("world_id_key"),
                 Vector2D_f(130.0f * count_x + 10.0f, 100.0f * count_y + 8),
                 16.0f
             );
 
-            if (count_x == 2) {
-                count_x = 0;
-                count_y++;
-            }
-            else {
-                count_x++;
-            }
-            
-            //std::cout << " World " << ++count << ": "
-            //   << res->getString("size_axisX") << std::endl;
+
+            count_y++;
         }
 
         delete res;
@@ -93,8 +85,6 @@ void DB::generateWorld(World* world, GLuint id, Vector2D_f size) {
         std::string selectDataSQL = "SELECT * FROM `worlds` inner join `worlds_object` on `worlds`.`world_id_key` = `worlds_object`.`world_id_key` where `worlds`.`world_id_key` = ";
         selectDataSQL += std::to_string(id + 1);
 
-        std::cout << selectDataSQL;
-
         sql::ResultSet* res
             = stmt->executeQuery(selectDataSQL);
 
@@ -111,11 +101,104 @@ void DB::generateWorld(World* world, GLuint id, Vector2D_f size) {
                 Vector2D_f(std::stoi(res->getString("position_axisX")), std::stoi(res->getString("position_axisY"))),
                 Vector2D_f(64.0f, 64.0f)
             );
-            //std::cout << " World " << ++count << ": "
-            //   << res->getString("size_axisX") << std::endl;
-        }
+        }   
 
+        delete res;
+        delete stmt;
+    }
+    catch (sql::SQLException& e) {
+        std::cerr << "SQL Error: " << e.what() << std::endl;
+    }
+
+}
+
+void DB::playerDop(World* world, GLuint id, std::vector<GLuint>& players_id, GLuint player_id) {
+    try {
+        sql::Statement* stmt;
+        stmt = this->con->createStatement();
+
+        // SQL query to retrieve data from the table
+       
+
+        std::string selectDataSQL = "Select * from `worlds_players` where `world_id_key` = ";
+        selectDataSQL += std::to_string(id + 1);
         
+        sql::ResultSet* res
+            = stmt->executeQuery(selectDataSQL);
+
+
+        if (players_id.size() == 0) {
+            while (res->next()) {
+
+                selectDataSQL = "Select * from `players` where `player_id_key` = ";
+                selectDataSQL += res->getString("player_id_key");
+
+                sql::ResultSet* res2
+                    = stmt->executeQuery(selectDataSQL);
+
+                while (res2->next()) {
+
+                    if (std::stoi(res->getString("player_id_key")) == player_id + 1) continue;
+
+                    if (std::stoi(res2->getString("player_status"))) {
+                        players_id.resize(players_id.size() + 1);
+                        players_id[players_id.size() - 1] = std::stoi(res->getString("player_id_key"));
+
+                        world->addWorldObjectUnit(
+                            &world->getGraphicResource()->getGraphicResourceUnit(2),
+                            Vector2D_f(std::stoi(res2->getString("position_axisX")), std::stoi(res2->getString("position_axisY"))),
+                            Vector2D_f(32.0f, 32.0f)
+                        );
+
+                    }
+
+                }
+
+                delete res2;
+
+            }
+
+        }
+        else {
+
+            int count = 0;
+
+            while (res->next()) {
+
+                selectDataSQL = "Select * from `players` where `player_id_key` = ";
+                selectDataSQL += res->getString("player_id_key");
+
+                sql::ResultSet* res2
+                    = stmt->executeQuery(selectDataSQL);
+
+                while (res2->next()) {
+
+                    if (count > players_id.size()) {
+
+                        if (std::stoi(res2->getString("player_status"))) {
+                            players_id.resize(players_id.size() + 1);
+                            players_id[players_id.size() - 1] = std::stoi(res->getString("player_id_key"));
+
+                            world->addWorldObjectUnit(
+                                &world->getGraphicResource()->getGraphicResourceUnit(2),
+                                Vector2D_f(std::stoi(res2->getString("position_axisX")), std::stoi(res2->getString("position_axisY"))),
+                                Vector2D_f(32.0f, 32.0f)
+                            );
+
+                        }
+
+                    }
+                    count++;
+
+                }
+
+                delete res2;
+
+            }
+
+        }
+       
+
 
         delete res;
         delete stmt;
@@ -144,34 +227,28 @@ void DB::generatePlayerVariable(GraphicInterface* grph_interface, Vector2D_f siz
             Vector2D_f(size.x / 128.0f, size.y / 128.0f)
         );
 
-        int count_x = 0;
+        int count_x = 1;
         int count_y = 0;
         while (res->next()) {
 
             grph_interface->takeInterfaceUnit().addGraphicObjectUnit(
                 &grph_interface->getGraphicResource()->getGraphicResourceUnit(2),
-                Vector2D_f(170.0f * count_x, 100.0f * count_y),
+                Vector2D_f(400.0f * count_x, 100.0f * count_y),
                 Vector2D_f(140.0f, 32.0f),
                 grph_interface->getGraphicResource()->getFont()
             );
             grph_interface->takeInterfaceUnit().setTextfromGraphicObjectUnit(
-                count_x + (count_y * 3),
+                count_y,
                 "Player " + res->getString("player_id_key"),
-                Vector2D_f(170.0f * count_x + 10.0f, 100.0f * count_y + 8),
+                Vector2D_f(400.0f * count_x + 10.0f, 100.0f * count_y + 8),
                 16.0f
             );
 
-            if (count_x == 2) {
-                count_x = 0;
-                count_y++;
-            }
-            else {
-                count_x++;
-            }
 
-            //std::cout << " World " << ++count << ": "
-            //   << res->getString("size_axisX") << std::endl;
+            count_y++;
         }
+
+        std::cout << 10 << std::endl;
 
         delete res;
         delete stmt;
@@ -195,7 +272,7 @@ void DB::generatePlayer(World* world, Player* player, GLuint id) {
         sql::ResultSet* res
             = stmt->executeQuery(selectDataSQL);
 
-        std::string updatePlayerStatus = "Update `players` set `player_status` = 0 where `player_id_key` = ";
+        std::string updatePlayerStatus = "Update `players` set `player_status` = 1 where `player_id_key` = ";
         updatePlayerStatus += std::to_string(id + 1);
 
         stmt->execute(updatePlayerStatus);
@@ -206,10 +283,11 @@ void DB::generatePlayer(World* world, Player* player, GLuint id) {
 
             player->setPosition(Vector2D_f(std::stoi(res->getString("position_axisX")), std::stoi(res->getString("position_axisY"))));
             world->addWorldObjectUnit(
-                &world->getGraphicResource()->getGraphicResourceUnit(1),
+                &world->getGraphicResource()->getGraphicResourceUnit(2),
                 Vector2D_f(std::stoi(res->getString("position_axisX")), std::stoi(res->getString("position_axisY"))),
                 Vector2D_f(32.0f, 32.0f)
             );
+
         }
 
         delete res;
@@ -235,6 +313,77 @@ void DB::playerMove(Vector2D_f position, GLuint id) {
         updatePlayerStatus += std::to_string(position.y);
         updatePlayerStatus += " where `player_id_key` = ";
         updatePlayerStatus += std::to_string(id + 1);
+
+        stmt->execute(updatePlayerStatus);
+
+        this->con->commit();
+
+        delete stmt;
+    }
+    catch (sql::SQLException& e) {
+        std::cerr << "SQL Error: " << e.what() << std::endl;
+    }
+
+
+}
+
+void DB::updatePlayer(World* world, GLuint id, std::vector<GLuint>& player_id) {
+
+    try {
+        sql::Statement* stmt;
+        stmt = this->con->createStatement();
+
+        // SQL query to retrieve data from the table
+        std::string selectDataSQL = "Select * from `worlds_players` where `world_id_key` = ";
+        selectDataSQL += std::to_string(id + 1);
+        sql::ResultSet* res
+            = stmt->executeQuery(selectDataSQL);
+
+        while (res->next()) {
+
+
+            selectDataSQL = "Select * from `players` where `player_id_key` = ";
+            selectDataSQL += res->getString("player_id_key");
+
+            sql::ResultSet* res2
+                = stmt->executeQuery(selectDataSQL);
+
+            int count = 0;
+            while (res2->next()) {
+                
+                world->updateDinamicObjectUnit(
+                    world->pullWorldObjectUnit().size() - (player_id.size() + count),
+                    Vector2D_f(std::stoi(res2->getString("position_axisX")), std::stoi(res2->getString("position_axisY")))
+                );
+
+                count++;
+
+            }
+
+            delete res2;
+
+        }
+
+        delete res;
+        delete stmt;
+    }
+    catch (sql::SQLException& e) {
+        std::cerr << "SQL Error: " << e.what() << std::endl;
+    }
+
+
+}
+
+void DB::playerDisconect(GLuint player_id) {
+
+    try {
+        sql::Statement* stmt;
+        stmt = this->con->createStatement();
+
+        // SQL query to retrieve data from the table
+
+        std::string updatePlayerStatus = "Update `players` set `player_status` = 0 where `player_id_key` = ";
+        updatePlayerStatus += std::to_string(player_id + 1);
 
         stmt->execute(updatePlayerStatus);
 

@@ -26,9 +26,16 @@ public:
 
     void generateWorld(World* world, GLuint id, Vector2D_f size);
 
+    void playerDop(World* world, GLuint id, std::vector<GLuint>& players_id, GLuint player_id);
+
     void generatePlayerVariable(GraphicInterface* grph_interface, Vector2D_f size);
 
     void generatePlayer(World* world, Player* player, GLuint id);
 
     void playerMove(Vector2D_f position, GLuint id);
+
+    void updatePlayer(World* world, GLuint id, std::vector<GLuint>& player_id);
+
+    void playerDisconect(GLuint player_id);
+
 };
