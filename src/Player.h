@@ -48,6 +48,8 @@ public:
 
 	float getSpeed() const;
 
+	void setPosition(Vector2D_f position);
+
 	Characteristic& takeCharacteristic();
 
 };

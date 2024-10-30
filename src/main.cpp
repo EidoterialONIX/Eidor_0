@@ -16,16 +16,7 @@
 #include "GraphicResource.h"
 #include "World.h"
 
-
-/*
-#include <cppconn/driver.h> 
-#include <cppconn/exception.h> 
-#include <cppconn/statement.h> 
-#include <mysql_connection.h> 
-#include <mysql_driver.h> 
-*/
-
-//#include "player.h"
+#include "DBM.h"
 
 #include <iostream>
 
@@ -42,6 +33,7 @@ GraphicInterface* ptr_grph_interface;
 Player* ptr_player;
 World* ptr_world;
 Collision collision;
+DB* ptr_DB;
 
 void glfwWindowSizeCallback(GLFWwindow* pWindow, int width, int height)
 {
@@ -94,29 +86,79 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
             for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
 
-                if (collision.check_Interface_Collision(
-                    ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
-                    ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
-                    _option.CURSOR_POSITION[0],
-                    _option.CURSOR_POSITION[1]
-                )) {
-                    ptr_grph_interface->changeActiveInterfaceUnit(i);
+                if (i == 0) {
+                    if (collision.check_Interface_Collision(
+                        ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
+                        ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
+                        _option.CURSOR_POSITION[0],
+                        _option.CURSOR_POSITION[1]
+                    )) {
+                        ptr_grph_interface->changeActiveInterfaceUnit(1);
+
+                        ptr_world->setWorldBackgroundUnit(
+                            &ptr_world->getGraphicResource()->getGraphicResourceUnit(0),
+                            Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
+                            Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
+                        );
+                        ptr_world->addWorldObjectUnit(
+                            &ptr_world->getGraphicResource()->getGraphicResourceUnit(2),
+                            ptr_player->getBody().get_Position(),
+                            ptr_player->getBody().get_Size()
+                        );
+                    }
                 }
+                else if (i == 1) {
+                    if (collision.check_Interface_Collision(
+                        ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
+                        ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
+                        _option.CURSOR_POSITION[0],
+                        _option.CURSOR_POSITION[1]
+                    )) {
+                        ptr_grph_interface->changeActiveInterfaceUnit(2);
+                    }
+                }
+                
 
             }
         }
 
     }
-    else if (ptr_grph_interface->getActiveInterfaceUnit() == 1) {
-        if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-            for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
+    else if (ptr_grph_interface->getActiveInterfaceUnit() == 2) {
+        for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
 
 
+            if (collision.check_Interface_Collision(
+                ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
+                ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
+                _option.CURSOR_POSITION[0],
+                _option.CURSOR_POSITION[1]
+            )) {
+                ptr_DB->generateWorld(ptr_world, i, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
+                ptr_grph_interface->changeActiveInterfaceUnit(3);
+                
             }
+
         }
 
     }
-        
+    else if (ptr_grph_interface->getActiveInterfaceUnit() == 3) {
+        for (int i{ 0 }; i < ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit().size(); i++) {
+
+            if (collision.check_Interface_Collision(
+                ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Position(),
+                ptr_grph_interface->takeInterfaceUnit().pullGraphicObjectUnit()[i].cl_graphic_unit.get_Size(),
+                _option.CURSOR_POSITION[0],
+                _option.CURSOR_POSITION[1]
+            )) {
+               ptr_DB->generatePlayer(ptr_world, ptr_player, i);
+               ptr_grph_interface->changeActiveInterfaceUnit(1);
+
+            }
+
+        }
+
+    }
+    
 
 
        
@@ -166,6 +208,9 @@ int main(void)
     }
     std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
+
+    DB db;
+    ptr_DB = &db;
 
     /// Interface ////////////////////
     //////////////////////////////////////////////////////
@@ -292,6 +337,17 @@ int main(void)
     );
     grph_interface.changeActiveInterfaceUnit(0);
 
+
+    grph_interface.addNewInterfaceUnit();
+    grph_interface.changeActiveInterfaceUnit(2);
+    db.generateWorldVariable(&grph_interface, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
+
+    grph_interface.addNewInterfaceUnit();
+    grph_interface.changeActiveInterfaceUnit(3);
+    db.generatePlayerVariable(&grph_interface, Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]));
+
+    grph_interface.changeActiveInterfaceUnit(0);
+
     ptr_grph_interface = &grph_interface;
     //////////////////////////////////////////////////////
     //////////////////////////////////////////////////////
@@ -346,16 +402,6 @@ int main(void)
         Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
         Vector2D_f(_option.WINDOW_SIZE[0] / 128.0f, _option.WINDOW_SIZE[1] / 128.0f)
     );
-    world.addWorldObjectUnit(
-        &world.getGraphicResource()->getGraphicResourceUnit(rock.getStructureId()),
-        rock.getBody().get_Position(),
-        rock.getBody().get_Size()
-    );
-    world.addWorldObjectUnit(
-        &world.getGraphicResource()->getGraphicResourceUnit(2),
-        player.getBody().get_Position(),
-        player.getBody().get_Size()
-    );
 
 
 
@@ -383,7 +429,6 @@ int main(void)
         Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
         Vector2D_f(3000.0f, 5000.0f)
     );
-
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -415,22 +460,22 @@ int main(void)
 
 
             if (grph_interface.getActiveInterfaceUnit() == 1) {
-                
 
                 _camera.renderWorld(shader, shader_bg);
                 player.movePlayer();
                 world.updateDinamicObjectUnit(
-                    1,
+                    world.pullWorldObjectUnit().size() - 1,
                     player.getBody().get_Position()
                 );
 
                 _camera.renderGraphicInterface(shader, shader_bg);
 
+                db.playerMove(player.getBody().get_Position(), 0);
             }
-
-            if (grph_interface.getActiveInterfaceUnit() == 0) {
+            else {
                 _camera.renderGraphicInterface(shader, shader_bg);
             }
+            
 
             /* Swap front and back buffers */
             glfwSwapBuffers(pWindow);

@@ -49,3 +49,9 @@ Characteristic& Player::takeCharacteristic() {
 	return this->_characteristic;
 
 }
+
+void Player::setPosition(Vector2D_f position) {
+	this->_body.set_Position(position);
+	this->_collider.set_Position(position);
+
+}
