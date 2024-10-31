@@ -34,7 +34,7 @@ public:
 
     void playerMove(Vector2D_f position, GLuint id);
 
-    void updatePlayer(World* world, GLuint id, std::vector<GLuint>& player_id);
+    void updatePlayer(World* world, GLuint id, std::vector<GLuint>& players_id, GLuint player_id);
 
     void playerDisconect(GLuint player_id);
 

@@ -327,7 +327,7 @@ void DB::playerMove(Vector2D_f position, GLuint id) {
 
 }
 
-void DB::updatePlayer(World* world, GLuint id, std::vector<GLuint>& player_id) {
+void DB::updatePlayer(World* world, GLuint id, std::vector<GLuint>& players_id, GLuint player_id) {
 
     try {
         sql::Statement* stmt;
@@ -350,9 +350,11 @@ void DB::updatePlayer(World* world, GLuint id, std::vector<GLuint>& player_id) {
 
             int count = 0;
             while (res2->next()) {
+
+                if (std::stoi(res->getString("player_id_key")) == player_id + 1) continue;
                 
                 world->updateDinamicObjectUnit(
-                    world->pullWorldObjectUnit().size() - (player_id.size() + count),
+                    world->pullWorldObjectUnit().size() - (players_id.size() - count),
                     Vector2D_f(std::stoi(res2->getString("position_axisX")), std::stoi(res2->getString("position_axisY")))
                 );
 

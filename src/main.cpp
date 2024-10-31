@@ -99,6 +99,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
                     )) {
                         ptr_grph_interface->changeActiveInterfaceUnit(1);
 
+                        player_id = 1;
+
                         ptr_world->setWorldBackgroundUnit(
                             &ptr_world->getGraphicResource()->getGraphicResourceUnit(0),
                             Vector2D_f(_option.WINDOW_SIZE[0], _option.WINDOW_SIZE[1]),
@@ -468,7 +470,7 @@ int main(void)
                 _camera.renderWorld(shader, shader_bg);
                 player.movePlayer();
                 world.updateDinamicObjectUnit(
-                    world.pullWorldObjectUnit().size() - (player_id + players_id.size()),
+                    world.pullWorldObjectUnit().size() - (0 + 1 + players_id.size()),
                     player.getBody().get_Position()
                 );
 
@@ -479,7 +481,7 @@ int main(void)
 
                 db.playerMove(player.getBody().get_Position(), player_id);
 
-                db.updatePlayer(ptr_world, world_id, players_id);
+                db.updatePlayer(ptr_world, world_id, players_id, player_id);
             }
             else {
                 _camera.renderGraphicInterface(shader, shader_bg);
